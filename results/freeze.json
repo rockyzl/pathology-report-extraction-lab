@@ -1,0 +1,7 @@
+{
+  "frozen_commit": "2b0a44b875cc77187b13f24a42fecc1e66a2deee",
+  "frozen_at": "2026-11-20T22:18:55+00:00",
+  "prompt_version": "v3",
+  "protocol_version": "1.0",
+  "note": "test-set extraction and evaluation run once against this commit"
+}
