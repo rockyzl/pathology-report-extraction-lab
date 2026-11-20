@@ -84,7 +84,7 @@ def _client():
     key = os.environ.get("OPENAI_API_KEY")
     if not key:
         raise RuntimeError("OPENAI_API_KEY is not set")
-    return OpenAI(api_key=key, base_url=BASE_URL, timeout=120, max_retries=8)
+    return OpenAI(api_key=key, base_url=BASE_URL, timeout=120, max_retries=8)  # retries 429 rate limits with back-off
 
 
 def cache_key(model: str, patient_id: str, text: str) -> str:
@@ -156,7 +156,7 @@ def to_extraction(rec: dict, text: str) -> dict:
 
 
 _spend_lock = threading.Lock()
-_spend = {"usd": 0.0, "cap": None}
+_spend = {"usd": 0.0, "cap": None, "abort": None}
 
 
 def run(model: str, items: list[tuple[str, str]], workers: int = 2, budget_usd: float = 6.0) -> list[dict]:
@@ -184,6 +184,8 @@ def run(model: str, items: list[tuple[str, str]], workers: int = 2, budget_usd: 
             fh.flush()
             cache[rec["key"]] = rec
     missing = [p for p, t in items if cache_key(model, p, t) not in cache]
+    if _spend["abort"]:
+        raise RuntimeError(f"aborted: {_spend['abort']} ({len(missing)} calls not made or failed); add credit and rerun")
     if missing:
         raise RuntimeError(f"{len(missing)} calls failed or skipped (not cached); rerun to retry: {missing[:5]}")
     return [cache[cache_key(model, p, t)] for p, t in items]
@@ -191,13 +193,18 @@ def run(model: str, items: list[tuple[str, str]], workers: int = 2, budget_usd: 
 
 def _safe_call(client, model, pid, text):
     with _spend_lock:
+        if _spend["abort"]:
+            return None
         if _spend["cap"] is not None and _spend["usd"] >= _spend["cap"]:
-            print(f"[llm] budget cap {_spend['cap']} reached; skipping {model} {pid}")
+            print(f"[llm] budget cap {_spend['cap']} reached; skipping {model} {pid}", flush=True)
             return None
     try:
         rec = call_model(client, model, pid, text)
     except Exception as e:  # transient API errors are not cached; a rerun retries them
-        print(f"[llm] {model} {pid} failed: {type(e).__name__}: {str(e)[:200]}")
+        print(f"[llm] {model} {pid} failed: {type(e).__name__}: {str(e)[:200]}", flush=True)
+        if "insufficient_quota" in str(e) or "credit_balance_exhausted" in str(e):
+            with _spend_lock:
+                _spend["abort"] = "insufficient_quota"  # account has no credit: stop instead of retrying every call
         return None
     with _spend_lock:
         _spend["usd"] += rec["cost_usd"]

@@ -1,0 +1,35 @@
+{
+  "current_openai_api": {
+    "by_model_prompt": {},
+    "total_usd_list_price": 0,
+    "pricing": "OpenAI API standard list prices incl. cached-input rate (protocol.json)"
+  },
+  "superseded_azure": {
+    "by_model_prompt": {
+      "gpt-4.1 prompt v2": {
+        "calls": 81,
+        "input_tokens": 198464,
+        "cached_input_tokens": 0,
+        "output_tokens": 28800,
+        "usd": 0.627328
+      },
+      "gpt-4.1 prompt v3": {
+        "calls": 338,
+        "input_tokens": 833351,
+        "cached_input_tokens": 0,
+        "output_tokens": 113584,
+        "usd": 2.575374
+      },
+      "gpt-4o prompt v3": {
+        "calls": 258,
+        "input_tokens": 633058,
+        "cached_input_tokens": 0,
+        "output_tokens": 86195,
+        "usd": 2.4446
+      }
+    },
+    "uncached_smoke_test_usd": 0.017734,
+    "total_usd_list_price": 5.665
+  },
+  "note": "token usage from API usage fields x list prices; actual billing not checked"
+}

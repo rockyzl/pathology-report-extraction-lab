@@ -149,3 +149,9 @@ The tags are not adjudicated.
 - **What is re-run.** Rules (deterministic) and both LLM arms on the 258 held-out test reports, once, against the new freeze commit recorded in `results/freeze.json`. Dev LLM iteration (prompt v2 → v3 on 80 dev reports) happened on the superseded endpoint and is not repeated; the prompt is frozen.
 - **Status of the old results.** The v1.0 test results are moved to `results/superseded_azure/` and kept only for comparison. The headline results are the replication. Agreement between the two runs will be reported in `results/replication_vs_superseded.json`: primary estimate, and field-level identity of extracted values per model.
 - **Adjudication sample.** Regenerated with the identical selection rule. Items that changed relative to the superseded sample are listed.
+
+#### Addendum 2 run log
+
+- **Attempt 1, 2026-11-20 ~22:19 UTC: aborted, zero responses.** The OpenAI API returned HTTP 429 `insufficient_quota` / `credit_balance_exhausted` ("You have no credits remaining") for every completion call. The SDK retried each call, so the run hung without producing output. It was stopped by hand, and one single diagnostic call confirmed the error. No completion was returned, no response was cached, and no token usage was billed. The model endpoints for both snapshots were reachable (`models.retrieve` succeeded).
+- **Provider-layer fix (no analysis change).** `src/prel/llm.py` now aborts the whole run on `insufficient_quota` instead of retrying every call, and flushes its error log. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze (verified). A new freeze will be recorded before the next attempt.
+- **Status: replication BLOCKED** until credit is added to the OpenAI account. Until then, the only test results are the superseded v1.0 results in `results/superseded_azure/`. They must not be used as headline results.
