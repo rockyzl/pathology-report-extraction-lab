@@ -6,3 +6,4 @@ data/derived/
 results/cache/
 *.log
 .env
+results/extractions/
