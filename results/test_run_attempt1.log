@@ -1,0 +1,19 @@
+[llm] gpt-4.1 TCGA-AC-A8OP failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+[llm] gpt-4.1 TCGA-AR-A2LE failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+[llm] gpt-4.1 TCGA-D8-A1X8 failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+[llm] gpt-4.1 TCGA-E2-A14X failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+[llm] gpt-4.1 TCGA-E2-A1IU failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+[llm] gpt-4.1 TCGA-EW-A2FV failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+[llm] gpt-4.1 TCGA-LL-A7SZ failed: RateLimitError: Error code: 429 - {'error': {'message': 'Your requests to gpt-4.1 for gpt-4.1 in eastus have exceeded token rate limit.', 'type': 'too_many_requests', 'param': None, 'code': 'rate_limit_exceeded'}}
+Traceback (most recent call last):
+  File "<repo>/scripts/run_eval.py", line 134, in <module>
+    {"dev": dev, "freeze": freeze, "test": test}[sys.argv[1]]()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<repo>/scripts/run_eval.py", line 73, in test
+    preds[m], recs[m] = E.run_llm(m, pids, texts, budget_usd=10.0)
+                        ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>/src/prel/evaluate.py", line 30, in run_llm
+    recs = llm.run(model, [(p, texts[p]) for p in pids], **kw)
+  File "<repo>/src/prel/llm.py", line 179, in run
+    raise RuntimeError(f"{len(missing)} calls failed (not cached); rerun to retry: {missing[:5]}")
+RuntimeError: 7 calls failed (not cached); rerun to retry: ['TCGA-AC-A8OP', 'TCGA-AR-A2LE', 'TCGA-D8-A1X8', 'TCGA-E2-A14X', 'TCGA-E2-A1IU']

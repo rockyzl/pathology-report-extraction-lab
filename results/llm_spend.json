@@ -1,0 +1,29 @@
+{
+  "by_model_prompt": {
+    "gpt-4.1 prompt v2": {
+      "calls": 81,
+      "input_tokens": 198464,
+      "output_tokens": 28800,
+      "usd": 0.627328
+    },
+    "gpt-4.1 prompt v3": {
+      "calls": 338,
+      "input_tokens": 833351,
+      "output_tokens": 113584,
+      "usd": 2.575374
+    },
+    "gpt-4o prompt v3": {
+      "calls": 258,
+      "input_tokens": 633058,
+      "output_tokens": 86195,
+      "usd": 2.4446
+    }
+  },
+  "uncached_smoke_test": {
+    "calls": 2,
+    "usd": 0.017734,
+    "note": "initial connectivity smoke test (one dev report per deployment), not cached"
+  },
+  "total_usd_list_price": 5.665,
+  "note": "computed from token usage x list prices in protocol.json; actual Azure billing not checked"
+}

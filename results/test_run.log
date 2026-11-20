@@ -1,0 +1,57 @@
+rules
+field               n    cov    e2e    ans  kappa  rej
+er_status         247  0.409  0.364  0.891  0.734    0
+pr_status         247  0.417  0.364  0.874  0.722    0
+her2_ihc_status   219  0.251  0.215  0.855  0.670    0
+her2_ihc_score    157  0.178  0.127  0.714  0.590    0
+her2_ish_status   112  0.116  0.089  0.769  0.304    0
+histologic_type   258  0.837  0.810  0.968  0.927    0
+pathologic_t      258  0.616  0.581  0.943  0.897    0
+pathologic_n      258  0.566  0.550  0.973  0.958    0
+laterality        258  0.814  0.791  0.971  0.943    0
+margin_status     247  0.611  0.543  0.887  0.300    0
+ln_examined       224  0.513  0.246  0.478    nan    0
+ln_positive       219  0.511  0.402  0.786    nan    0
+macro e2e (categorical) 0.444; all 0.424
+gpt-4.1
+field               n    cov    e2e    ans  kappa  rej
+er_status         247  0.571  0.567  0.993  0.982    3
+pr_status         247  0.538  0.514  0.955  0.902   11
+her2_ihc_status   219  0.438  0.374  0.854  0.719   22
+her2_ihc_score    157  0.427  0.369  0.866  0.809    2
+her2_ish_status   112  0.286  0.268  0.938  0.826    2
+histologic_type   258  0.988  0.950  0.961  0.917    3
+pathologic_t      258  0.713  0.671  0.940  0.893    5
+pathologic_n      258  0.736  0.702  0.953  0.924   11
+laterality        258  0.919  0.899  0.979  0.958    2
+margin_status     247  0.789  0.680  0.862  0.288    9
+ln_examined       224  0.812  0.661  0.813    nan   15
+ln_positive       219  0.826  0.726  0.878    nan   13
+macro e2e (categorical) 0.599; all 0.615
+gpt-4o
+field               n    cov    e2e    ans  kappa  rej
+er_status         247  0.571  0.567  0.993  0.981    3
+pr_status         247  0.522  0.494  0.946  0.881   15
+her2_ihc_status   219  0.502  0.438  0.873  0.748    9
+her2_ihc_score    157  0.439  0.376  0.855  0.790    2
+her2_ish_status   112  0.295  0.277  0.939  0.805    2
+histologic_type   258  0.984  0.950  0.965  0.925    4
+pathologic_t      258  0.713  0.674  0.946  0.902   11
+pathologic_n      258  0.756  0.721  0.954  0.925   21
+laterality        258  0.899  0.888  0.987  0.974    6
+margin_status     247  0.785  0.611  0.778  0.206   22
+ln_examined       224  0.808  0.652  0.807    nan   24
+ln_positive       219  0.817  0.726  0.888    nan   23
+macro e2e (categorical) 0.600; all 0.614
+PRIMARY {
+ "estimand": "macro agreement_e2e over the 10 categorical fields, gpt-4.1 minus rules, test set",
+ "diff": 0.15586776322634893,
+ "ci_low": 0.13588595663074454,
+ "ci_high": 0.17646979607037158,
+ "n_boot": 2000,
+ "seed": 20261120,
+ "a": 0.5993776953990798,
+ "b": 0.4435099321727309,
+ "p_boot_le_0": 0.0,
+ "decision": "gpt-4.1 higher agreement"
+}

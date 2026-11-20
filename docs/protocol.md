@@ -126,4 +126,7 @@ The tags are not adjudicated.
 
 ## Addenda
 
-(none yet)
+### Addendum 1 — 2026-11-20 (after the test run; no change to the prespecified analysis)
+
+- **Failed calls.** The first test attempt stopped after the gpt-4.1 pass because 7 calls still returned HTTP 429 after 8 SDK retries (`results/test_run_attempt1.log`). As prespecified ("a report whose call still fails is re-run until success"), the runner was re-executed unchanged; it served the 251 cached gpt-4.1 responses from cache, made the 7 missing calls, then ran gpt-4o. No code, prompt or protocol change.
+- **Post hoc analyses (labelled as such, not prespecified):** `scripts/posthoc.py` → `results/posthoc_rejections.json` (claimed value of grounding-rejected fields vs curated value) and `results/adjudication_agent_preread.md` (agent's tentative read of the 30 adjudication items; not an adjudication).
