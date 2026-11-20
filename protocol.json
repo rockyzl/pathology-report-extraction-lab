@@ -1,0 +1,233 @@
+{
+  "protocol_version": "1.0",
+  "date": "2026-11-20",
+  "status": "prespecified before any test-set extraction or evaluation; later changes only as dated addenda in docs/protocol.md",
+  "question": "How well do a rules/regex baseline and a quote-grounded LLM extractor agree with curated TCGA clinical fields when extracting a fixed schema from OCR'd TCGA-BRCA pathology reports?",
+  "framing": "Agreement with curated fields, not accuracy. Curated values may come from documents other than the OCR'd report (addenda, separate IHC/FISH reports, later surgery), so disagreement is not necessarily extractor error.",
+  "cohort": {
+    "source": "TCGA-Reports (Kefeli & Tatonetti 2024) BRCA reports joined to UCSC Xena TCGA.BRCA.sampleMap/BRCA_clinicalMatrix",
+    "n_patients": 1034,
+    "unit": "patient (one report per patient)"
+  },
+  "split": {
+    "rule": "sort unique patient IDs by SHA256(patient_id|pathology-extraction-v1); first round(0.25*n) are test; no outcome or label is read",
+    "dev": 776,
+    "test": 258,
+    "file": "data/membership.json",
+    "use": "dev for rule/prompt iteration; test extracted and evaluated once after the freeze commit"
+  },
+  "llm_dev_sample": {
+    "rule": "sort dev patient IDs by SHA256(patient_id|pathology-extraction-llm-dev-v1); first 80",
+    "n": 80
+  },
+  "fields": {
+    "er_status": {
+      "kind": "cat",
+      "values": [
+        "positive",
+        "negative"
+      ],
+      "curated": "breast_carcinoma_estrogen_receptor_status",
+      "grounding_cue_regex": "(?i)estrogen|oestrogen|\\bE\\.?R\\b|\\bER[-+:]"
+    },
+    "pr_status": {
+      "kind": "cat",
+      "values": [
+        "positive",
+        "negative"
+      ],
+      "curated": "breast_carcinoma_progesterone_receptor_status",
+      "grounding_cue_regex": "(?i)progesterone|\\bP\\.?R\\b|\\bPgR\\b|\\bPR[-+:]"
+    },
+    "her2_ihc_status": {
+      "kind": "cat",
+      "values": [
+        "positive",
+        "equivocal",
+        "negative"
+      ],
+      "curated": "lab_proc_her2_neu_immunohistochemistry_receptor_status",
+      "grounding_cue_regex": "(?i)her-?\\s?2|\\bneu\\b|erbb-?2|herceptest|c-?erb"
+    },
+    "her2_ihc_score": {
+      "kind": "cat",
+      "values": [
+        "0",
+        "1+",
+        "2+",
+        "3+"
+      ],
+      "curated": "her2_immunohistochemistry_level_result",
+      "grounding_cue_regex": "(?i)(?:\\b[0-3]\\s*\\+|\\+\\s*[0-3]\\b|\\bscore\\b|\\b0\\b|\\bzero\\b|negative|positive)"
+    },
+    "her2_ish_status": {
+      "kind": "cat",
+      "values": [
+        "amplified",
+        "equivocal",
+        "not_amplified"
+      ],
+      "curated": "lab_procedure_her2_neu_in_situ_hybrid_outcome_type",
+      "grounding_cue_regex": "(?i)\\bFISH\\b|\\b[CS]?ISH\\b|amplif|ratio|in[- ]situ|hybridi[sz]ation|chromosome\\s*17|cep\\s*17"
+    },
+    "histologic_type": {
+      "kind": "cat",
+      "values": [
+        "ductal",
+        "lobular",
+        "mixed_ductal_lobular",
+        "mucinous",
+        "other"
+      ],
+      "curated": "histological_type",
+      "grounding_cue_regex": "(?i)carcinoma|ductal|lobular|mucinous|colloid|metaplastic|medullary|papillary|tubular|cribriform|apocrine"
+    },
+    "pathologic_t": {
+      "kind": "cat",
+      "values": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "TX"
+      ],
+      "curated": "pathologic_T",
+      "grounding_cue_regex": "(?i)\\b(?:y?p|y)?\\s*T\\s*[0-4xXIl]|\\bT(?:is)\\b|\\bT\\s*stage\\s*[:=]?\\s*[0-4xX]"
+    },
+    "pathologic_n": {
+      "kind": "cat",
+      "values": [
+        "N0",
+        "N1",
+        "N2",
+        "N3",
+        "NX"
+      ],
+      "curated": "pathologic_N",
+      "grounding_cue_regex": "(?i)(?:\\b|(?<=[0-9a-d]))(?:y?p|y)?\\s*N\\s*[0-3oOxX]|\\bN\\s*stage\\s*[:=]?\\s*[0-3oOxX]"
+    },
+    "laterality": {
+      "kind": "cat",
+      "values": [
+        "left",
+        "right"
+      ],
+      "curated": "anatomic_neoplasm_subdivision",
+      "grounding_cue_regex": "(?i)\\bleft\\b|\\bright\\b|\\blt\\.?\\b|\\brt\\.?\\b"
+    },
+    "margin_status": {
+      "kind": "cat",
+      "values": [
+        "negative",
+        "close",
+        "positive"
+      ],
+      "curated": "margin_status",
+      "grounding_cue_regex": "(?i)margin|resection edge|excision edge|inked"
+    },
+    "ln_examined": {
+      "kind": "count",
+      "curated": "lymph_node_examined_count",
+      "grounding_cue_regex": "(?i)\\d|\\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|none|no)\\b"
+    },
+    "ln_positive": {
+      "kind": "count",
+      "curated": "number_of_lymphnodes_positive_by_he",
+      "grounding_cue_regex": "(?i)\\d|\\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|none|no|negative)\\b"
+    }
+  },
+  "curated_mapping": {
+    "er_status/pr_status": "Positive->positive, Negative->negative; Indeterminate, [Not Available], missing -> excluded from that field",
+    "her2_ihc_status": "lab_proc_her2_neu_immunohistochemistry_receptor_status Positive/Equivocal/Negative; Indeterminate excluded",
+    "her2_ihc_score": "her2_immunohistochemistry_level_result 0/1+/2+/3+",
+    "her2_ish_status": "lab_procedure_her2_neu_in_situ_hybrid_outcome_type Positive->amplified, Negative->not_amplified, Equivocal->equivocal; Indeterminate excluded",
+    "histologic_type": "Infiltrating Ductal->ductal; Infiltrating Lobular->lobular; Mucinous->mucinous; Mixed Histology or Other with histological_type_other mentioning both ductal and lobular->mixed_ductal_lobular; all else (metaplastic, medullary, NOS, other)->other",
+    "pathologic_t": "main AJCC category: leading T1-T4 or TX (T1c->T1, T4b->T4)",
+    "pathologic_n": "main AJCC category: N0-N3 or NX (N0 (i-)/N0 (i+)->N0, N1mi/N1a->N1)",
+    "laterality": "anatomic_neoplasm_subdivision containing only Left -> left, only Right -> right; both or missing -> excluded",
+    "margin_status": "margin_status Negative/Close/Positive",
+    "ln_examined": "lymph_node_examined_count (integer)",
+    "ln_positive": "number_of_lymphnodes_positive_by_he (integer; H&E only)",
+    "patient_dedup": "clinical matrix is sample-keyed; the curated columns are asserted identical across a patient's sample rows; one row per patient kept"
+  },
+  "extractors": {
+    "rules": {
+      "code": "src/prel/rules.py",
+      "description": "hand-written regular expressions, first-match or simple vote/sum heuristics, exact matched substring as evidence"
+    },
+    "gpt-4.1": {
+      "role": "primary LLM",
+      "deployment": "gpt-4.1 (model gpt-4.1-2025-04-14) on a personal Azure OpenAI resource",
+      "prompt_version": "v3"
+    },
+    "gpt-4o": {
+      "role": "secondary LLM",
+      "deployment": "gpt-4o (model gpt-4o-2024-11-20)",
+      "prompt_version": "v3"
+    },
+    "llm_settings": {
+      "temperature": 0,
+      "seed": 0,
+      "max_tokens": 3000,
+      "response_format": "json_schema strict=true",
+      "api_version": "2024-10-21",
+      "auth": "short-lived Azure CLI bearer token, subscription passed explicitly, no API key"
+    }
+  },
+  "grounding": {
+    "rule": "every non-not_stated value needs >=1 quote; each quote must occur in the report exactly or after collapsing whitespace runs to one space (no case folding, no fuzzy match); at least one quote must match the field's cue regex; count fields must have the number (digits or number word) in the quote unless several quotes are summed",
+    "failure": "value replaced by an abstention with status 'rejected' (counted separately from not_stated)",
+    "applies_to": "both extractors"
+  },
+  "metrics": {
+    "eligible": "per field, patients whose curated value is available",
+    "agreement_e2e": "PRIMARY per-field metric: agreeing answers / eligible; not_stated and rejected count as non-agreement",
+    "agreement_answered": "agreeing answers / answered eligible (secondary; read together with coverage)",
+    "coverage": "answered / eligible; also n_not_stated and n_rejected",
+    "kappa": "unweighted Cohen's kappa between curated and extracted values over answered eligible patients (categorical fields only)",
+    "counts": "exact match; within +-1 reported descriptively",
+    "macro": "unweighted mean over fields of per-field agreement_e2e"
+  },
+  "primary_comparison": {
+    "estimand": "macro agreement_e2e over the 10 categorical fields, gpt-4.1 minus rules, test set",
+    "ci": "paired patient bootstrap, resample test patients with replacement, B=2000, seed=20261120, percentile 95% CI",
+    "decision": "LLM has higher agreement with curated fields if the 95% CI lower bound > 0; lower if upper bound < 0; otherwise inconclusive"
+  },
+  "secondary_comparisons": [
+    "gpt-4o minus rules (same estimand)",
+    "gpt-4.1 minus gpt-4o",
+    "macro over all 12 fields",
+    "per-field paired bootstrap CIs for agreement_e2e differences (descriptive, no multiplicity correction)"
+  ],
+  "consistency_checks": {
+    "note": "cross-field consistency checks, not relation extraction; reported as violation rates among patients where both fields are answered, for each extractor and for curated values",
+    "positive_le_examined": "ln_positive <= ln_examined",
+    "pn_vs_positive_count": "pathologic_n equals AJCC bucket of ln_positive (0->N0, 1-3->N1, 4-9->N2, >=10->N3); excludes NX; known legitimate exceptions: micrometastases/ITC, IHC-only nodes, internal mammary/supraclavicular nodes, neoadjuvant setting",
+    "her2_score_vs_status": "IHC score 0/1+ -> negative, 2+ -> equivocal, 3+ -> positive"
+  },
+  "adjudication_sample": {
+    "population": "test patients x fields where gpt-4.1 or rules answered a value that differs from the curated value",
+    "size": 30,
+    "stratification": "round-robin over fields (shuffled within field, seed 20261120)",
+    "content": "curated value, rules value+quote, gpt-4.1 value+quote, gpt-4o value+quote, report context window",
+    "file": "results/adjudication_sample.md and .csv",
+    "status": "UNREVIEWED until Lu completes it; nothing is called validated before then"
+  },
+  "error_sources": "heuristic tags on all test disagreements (missing_in_report, multiple_specimens_or_sides, ocr_noise_in_evidence, extractors_conflict, curated_vs_report_conflict); tags are automatic and unadjudicated",
+  "cost": {
+    "prices_usd_per_1M_tokens": {
+      "gpt-4.1": {
+        "input": 2.0,
+        "output": 8.0
+      },
+      "gpt-4o": {
+        "input": 2.5,
+        "output": 10.0
+      }
+    },
+    "price_source": "Azure OpenAI list prices (global standard) as published at the time; actual billing not checked",
+    "reported": "per-report input/output tokens, latency, USD (mean, median, p95) per model on the test set",
+    "budget": "total LLM spend < USD 10; gpt-4.1 on the 80-patient dev sample (iteration) and on all 258 test reports; gpt-4o on all 258 test reports only; responses cached to results/cache/llm_cache.jsonl"
+  },
+  "failed_calls": "API errors are retried up to 8 times; a report whose call still fails is re-run until success; a non-'stop' finish or invalid JSON makes every field 'rejected' for that report"
+}

@@ -1,0 +1,175 @@
+{
+  "created_at": "2026-11-20T21:05:51+00:00",
+  "sources": {
+    "reports": {
+      "file": "TCGA_Reports.csv.zip",
+      "url": "https://raw.githubusercontent.com/jkefeli/tcga-path-reports/main/TCGA_Reports.csv.zip",
+      "sha256": "bbbc0ee0c75d8feb0bb246b4fa40e8e29bba9775d4a9e4f41e0b73a7955e1c12",
+      "license": "CC BY 4.0 (Mendeley Data DOI 10.17632/hyg5xkznpx.1); code repo MIT",
+      "citation": "Kefeli J, Tatonetti N. TCGA-Reports: A machine-readable pathology report resource for benchmarking text-based AI models. Patterns 5(3):100933 (2024).",
+      "bytes": 10913820,
+      "obtained": "already present",
+      "verified_at": "2026-11-20T21:05:51+00:00"
+    },
+    "report_cancer_type": {
+      "file": "tcga_patient_to_cancer_type.csv",
+      "url": "https://raw.githubusercontent.com/jkefeli/tcga-path-reports/main/data/tcga_metadata/tcga_patient_to_cancer_type.csv",
+      "sha256": "acb7ac3aba8b2daa69aab493e94f06c289b1f3365a0bd07e09222b9c4af791b3",
+      "license": "MIT (jkefeli/tcga-path-reports)",
+      "citation": "Kefeli & Tatonetti 2024",
+      "bytes": 209548,
+      "obtained": "already present",
+      "verified_at": "2026-11-20T21:05:51+00:00"
+    },
+    "clinical": {
+      "file": "BRCA_clinicalMatrix",
+      "url": "https://tcga.xenahubs.net/download/TCGA.BRCA.sampleMap/BRCA_clinicalMatrix",
+      "sha256": "39eb3be0fb86e6a577bd2cc01502a7fa5a271e1e1cba294e9dc644ad99580d7f",
+      "license": "UCSC Xena TCGA hub phenotype matrix; TCGA open-access clinical data (TCGA BCR clinical supplement), redistribution allowed",
+      "citation": "Goldman MJ, et al. Visualizing and interpreting cancer genomics data via the Xena platform. Nat Biotechnol 2020. TCGA Research Network.",
+      "bytes": 1698413,
+      "obtained": "already present",
+      "verified_at": "2026-11-20T21:05:51+00:00"
+    },
+    "clinical_metadata": {
+      "file": "BRCA_clinicalMatrix.json",
+      "url": "https://tcga.xenahubs.net/download/TCGA.BRCA.sampleMap/BRCA_clinicalMatrix.json",
+      "sha256": "62d77fb63892b7f2c000b2b7594a9d36edb20fc563875943e6278fb8ffe8085c",
+      "license": "UCSC Xena dataset metadata",
+      "citation": "UCSC Xena",
+      "bytes": 319,
+      "obtained": "already present",
+      "verified_at": "2026-11-20T21:05:51+00:00"
+    }
+  },
+  "cohort": {
+    "brca_reports_in_tcga_reports": 1034,
+    "dev": 776,
+    "test": 258,
+    "llm_dev_sample": 80,
+    "report_chars": {
+      "count": 1034.0,
+      "mean": 3964.8,
+      "std": 3453.1,
+      "min": 138.0,
+      "25%": 1241.0,
+      "50%": 3031.0,
+      "75%": 5898.8,
+      "max": 26162.0
+    },
+    "curated_available": {
+      "er_status": {
+        "dev": 741,
+        "test": 247
+      },
+      "pr_status": {
+        "dev": 738,
+        "test": 247
+      },
+      "her2_ihc_status": {
+        "dev": 636,
+        "test": 219
+      },
+      "her2_ihc_score": {
+        "dev": 432,
+        "test": 157
+      },
+      "her2_ish_status": {
+        "dev": 300,
+        "test": 112
+      },
+      "histologic_type": {
+        "dev": 775,
+        "test": 258
+      },
+      "pathologic_t": {
+        "dev": 776,
+        "test": 258
+      },
+      "pathologic_n": {
+        "dev": 776,
+        "test": 258
+      },
+      "laterality": {
+        "dev": 776,
+        "test": 258
+      },
+      "margin_status": {
+        "dev": 722,
+        "test": 247
+      },
+      "ln_examined": {
+        "dev": 699,
+        "test": 224
+      },
+      "ln_positive": {
+        "dev": 685,
+        "test": 219
+      }
+    },
+    "curated_distribution": {
+      "er_status": {
+        "positive": 770,
+        "negative": 218,
+        "None": 46
+      },
+      "pr_status": {
+        "positive": 663,
+        "negative": 322,
+        "None": 49
+      },
+      "her2_ihc_status": {
+        "negative": 533,
+        "None": 179,
+        "equivocal": 169,
+        "positive": 153
+      },
+      "her2_ihc_score": {
+        "None": 445,
+        "1+": 257,
+        "2+": 189,
+        "3+": 80,
+        "0": 63
+      },
+      "her2_ish_status": {
+        "None": 622,
+        "not_amplified": 330,
+        "amplified": 77,
+        "equivocal": 5
+      },
+      "histologic_type": {
+        "ductal": 738,
+        "lobular": 197,
+        "other": 56,
+        "mixed_ductal_lobular": 28,
+        "mucinous": 14,
+        "None": 1
+      },
+      "pathologic_t": {
+        "T2": 589,
+        "T1": 273,
+        "T3": 131,
+        "T4": 38,
+        "TX": 3
+      },
+      "pathologic_n": {
+        "N0": 494,
+        "N1": 336,
+        "N2": 110,
+        "N3": 74,
+        "NX": 20
+      },
+      "laterality": {
+        "left": 537,
+        "right": 497
+      },
+      "margin_status": {
+        "negative": 859,
+        "positive": 79,
+        "None": 65,
+        "close": 31
+      }
+    },
+    "tissue_source_sites": 39
+  }
+}

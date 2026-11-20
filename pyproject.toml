@@ -1,0 +1,26 @@
+[project]
+name = "pathology-report-extraction-lab"
+version = "0.1.0"
+description = "Quote-grounded structured extraction from OCR'd TCGA-BRCA pathology reports: rules baseline vs LLM, evaluated against curated clinical fields"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "numpy>=2,<3",
+  "pandas>=2,<3",
+  "scikit-learn>=1.6,<2",
+  "openai>=1.60,<3",
+  "pydantic>=2.8,<3",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/prel"]
