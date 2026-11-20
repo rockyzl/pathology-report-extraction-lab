@@ -1,0 +1,7 @@
+{
+  "rules_extract_all_reports": {
+    "n_reports": 1034,
+    "seconds": 0.918,
+    "note": "single process, CPU, extraction + grounding only (excludes data loading)"
+  }
+}

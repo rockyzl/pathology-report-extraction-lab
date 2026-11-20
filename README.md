@@ -46,7 +46,7 @@ Secondary: gpt-4o − rules +0.156 (95% CI +0.135 to +0.178); gpt-4.1 − gpt-4o
 
 - gpt-4.1: mean 2454 input + 331 output tokens, USD 0.0076/report (USD 1.95 for 258), latency mean 4.32 s / median 3.10 s / p95 10.79 s (2 workers, includes HTTP-429 back-off).
 - gpt-4o: mean 2454 input + 334 output tokens, USD 0.0095/report (USD 2.44 for 258), latency mean 2.38 s / median 2.24 s / p95 3.39 s (2 workers, includes HTTP-429 back-off).
-- Total LLM spend for the whole project (dev iteration + test, list prices × logged tokens): **USD 5.67** (`results/llm_spend.json`). Rules: < 1 s for all 1,034 reports on CPU.
+- Total LLM spend for the whole project (dev iteration + test, list prices × logged tokens): **USD 5.67** (`results/llm_spend.json`). Rules: 0.92 s for all 1,034 reports on CPU, single process (`results/rules_timing.json`).
 
 **Cross-field consistency checks** (violations / patients with both fields answered; these are checks, not relation extraction):
 
@@ -108,7 +108,7 @@ uv sync
 uv run python scripts/build_data.py        # copy/download + verify inputs, build cohort + split
 uv run pytest -q                           # unit tests
 uv run python scripts/run_eval.py dev      # dev tables (LLM part reads the cache)
-uv run python scripts/run_eval.py test     # one-shot test run (needs Azure CLI login; ~USD 4.6 uncached)
+uv run python scripts/run_eval.py test     # one-shot test run (needs Azure CLI login; measured USD 4.39 uncached: 1.95 gpt-4.1 + 2.44 gpt-4o)
 uv run python scripts/make_report.py       # results/results_tables.md
 uv run python scripts/spend.py             # results/llm_spend.json
 ```
