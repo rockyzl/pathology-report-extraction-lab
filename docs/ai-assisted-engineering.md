@@ -10,7 +10,7 @@
 - a hand-adjudication sample
 - the budget and data-access rules
 
-The agent wrote the code, the rules, the prompt, the tests and the documents. It ran the dev iteration and the one-shot test run, and a second model reviewed its plan before implementation.
+The agent wrote the code, the rules, the prompt, the tests and the documents. It ran the dev iteration, the one-shot test run and the provider-change replication. A second model reviewed its plan before implementation, and a separate reviewer agent audited the repo and its public claims afterwards.
 
 **Not yet reviewed by a human:** the 30-item adjudication sample (`results/adjudication_sample.md`) and every result table. Until Lu reviews the adjudication sample, nothing in this repository should be described as "validated".
 
@@ -34,6 +34,9 @@ The agent wrote the code, the rules, the prompt, the tests and the documents. It
 | 7 | Dev, rules | `HER2/NEU: zero or 1+` was extracted as score 1+. | Dev error browser | Ranges now produce an abstention (unit test `test_rules_abstain_on_empty_and_ambiguous`). |
 | 8 | Dev, LLM | With 4 parallel workers, 24 of 80 calls hit HTTP 429 (token rate limit). | Runner raised on missing cache entries instead of scoring them as abstentions | Concurrency was lowered to 2 workers with 8 SDK retries. Failed calls are never cached, and the run is re-executed until complete. |
 | 9 | Process | A `pkill -f scripts/dev_llm.py` meant to stop a hung background job also matched and killed the agent's own shell. | Exit code 144 | The job was simply re-run, and the cache made this free. Noted as a process-hygiene lesson. |
+
+| 10 | Provenance | The LLM endpoint was described as a "personal" Azure OpenAI resource in five places, and its subscription ID and endpoint were hard-coded defaults. That description was inaccurate: it was a provisional endpoint, which is no longer used. | Independent review by a separate reviewer agent (read-only) | All "personal" claims and the hard-coded defaults were removed. The LLM arms were re-run once on the official OpenAI API with the same pinned snapshots (`docs/protocol.md`, Addendum 2), and the earlier results were moved to `results/superseded_azure/` for comparison. |
+| 11 | Docs | The reviewer found overclaiming wording: the headline macro covers 10 categorical fields, not 12; "verifies the evidence span" suggested an entailment check; the cohort size (1,034) read as the LLM workload (gpt-4.1: 338 reports); the manifest hashes source files, not individual reports; the schema does not enforce "1–3 quotes". | Independent review | README, protocol and handoff wording corrected. |
 
 The test-phase checks are listed in the README under "What was verified on the test run".
 

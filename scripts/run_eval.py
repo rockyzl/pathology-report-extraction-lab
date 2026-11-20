@@ -70,7 +70,7 @@ def test():
     pids = mem["test"]
     preds, recs = {"rules": E.run_rules(pids, texts)}, {}
     for m in MODELS:
-        preds[m], recs[m] = E.run_llm(m, pids, texts, budget_usd=10.0)
+        preds[m], recs[m] = E.run_llm(m, pids, texts, budget_usd=6.0)
     for m, pr in preds.items():
         save_extractions(f"test_{m}", pids, pr)
     out = {"phase": "test", "frozen_commit": fz["frozen_commit"], "n_test": len(pids), "run_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

@@ -15,7 +15,7 @@ How well do two extractors agree with curated TCGA clinical fields when they ext
 - **Reports:** TCGA-Reports (Kefeli & Tatonetti 2024). Machine-readable OCR text of the TCGA pathology-report PDFs, one report per patient, BRCA subset. The data are public and de-identified. They are not EHR data.
 - **Curated reference:** the UCSC Xena `TCGA.BRCA.sampleMap/BRCA_clinicalMatrix` (TCGA BCR clinical data). It is sample-keyed. The curated columns used here were asserted identical across each patient's sample rows, and one row per patient was kept.
 - **Cohort:** 1,034 BRCA patients. All of them have both a report and a clinical row.
-- **Provenance:** URLs and SHA-256 hashes for every input are in `data/manifest.json`.
+- **Provenance:** URLs and a SHA-256 hash for each source file (4 files) are in `data/manifest.json`.
 
 ## Split
 
@@ -52,11 +52,11 @@ Mapping details:
 
 1. **Rules** (`src/prel/rules.py`): regular expressions with first-match, majority-vote or sum heuristics. The evidence is the exact matched substring.
 2. **LLM** (`src/prel/llm.py`), with gpt-4.1 as the primary model and gpt-4o as the secondary.
-   - Deployments: gpt-4.1 (`gpt-4.1-2025-04-14`) and gpt-4o (`gpt-4o-2024-11-20`), on a personal Azure OpenAI resource.
+   - Models: pinned snapshots `gpt-4.1-2025-04-14` and `gpt-4o-2024-11-20`. Provider: the OpenAI API, from Addendum 2 on. The original v1.0 runs used a provisional Azure OpenAI endpoint serving the same snapshots; they are superseded.
    - Prompt v3; temperature 0, seed 0.
-   - Strict JSON-schema structured output: each field has an enum or integer value plus 1–3 verbatim quotes.
+   - Strict JSON-schema structured output: each field has an enum or integer value plus a list of quotes. The prompt asks for 1–3 verbatim quotes. The schema does not enforce the count, and an empty list for a non-`not_stated` value is caught by grounding as `no_quote`.
    - The prompt forbids inference: no pT from tumor size, no pN from node counts, and clinical (history) staging is ignored.
-   - Auth uses a short-lived Azure CLI token with the subscription passed explicitly. No API key is used.
+   - Auth (from Addendum 2): `OPENAI_API_KEY` from the environment, with the base URL `https://api.openai.com/v1` passed explicitly.
 
 ## Grounding (applies to both extractors)
 
@@ -119,9 +119,9 @@ The tags are not adjudicated.
 
 ## Budget
 
-- Total LLM spend must stay under USD 10.
-- gpt-4.1 runs on the 80-patient dev sample and on all 258 test reports. gpt-4o runs on the 258 test reports only.
-- Prices (USD per 1M input/output tokens, Azure list prices, actual billing not checked): gpt-4.1 2.00/8.00, gpt-4o 2.50/10.00.
+- v1.0: total LLM spend under USD 10. gpt-4.1 ran on the 80-patient dev sample and on all 258 test reports; gpt-4o ran on the 258 test reports only.
+- Addendum 2 replication: a cap of USD 6 on the OpenAI API key, covering test reports only (2 × 258 calls).
+- Prices (USD per 1M tokens, list prices, actual billing not checked): gpt-4.1 2.00 input / 0.50 cached input / 8.00 output; gpt-4o 2.50 / 1.25 / 10.00.
 - All responses are cached in `results/cache/llm_cache.jsonl` (gitignored, since it contains report-derived text).
 
 ## Addenda
@@ -131,3 +131,21 @@ The tags are not adjudicated.
 - **Failed calls.** The first test attempt stopped after the gpt-4.1 pass because 7 calls still returned HTTP 429 after 8 SDK retries (`results/test_run_attempt1.log`). As prespecified ("a report whose call still fails is re-run until success"), the runner was re-executed unchanged; it served the 251 cached gpt-4.1 responses from cache, made the 7 missing calls, then ran gpt-4o. No code, prompt or protocol change.
 - **Error-tag vocabulary.** Between the protocol commit (`3ee8e84`) and the freeze (`1fb21c1`), `src/prel/analysis.py` added two tags not listed in `protocol.json`: `not_extracted_by_any` (field cue present in the report but no extractor answered) and `untagged` (no heuristic fired). Both were added before any test-set call.
 - **Post hoc analyses (labelled as such, not prespecified):** `scripts/posthoc.py` → `results/posthoc_rejections.json` (claimed value of grounding-rejected fields vs curated value) and `results/adjudication_agent_preread.md` (agent's tentative read of the 30 adjudication items; not an adjudication).
+
+### Addendum 2 — 2026-11-20 (written and committed before the replication run)
+
+- **Why.** The v1.0 LLM runs used a provisional Azure OpenAI endpoint that is no longer used. Earlier text called it "personal"; that was inaccurate and has been removed. That endpoint must no longer be used.
+- **Change.** The provider is now the official OpenAI API (`https://api.openai.com/v1`), authenticated with `OPENAI_API_KEY` from the project owner's OpenAI account. The pinned model snapshots are the same as the superseded deployments: `gpt-4.1-2025-04-14` and `gpt-4o-2024-11-20`.
+- **Frozen, unchanged:**
+  - prompt v3 (`SYSTEM_PROMPT` text identical)
+  - JSON schema, strict mode, temperature 0, seed 0, max_tokens 3000
+  - rules baseline, grounding rule, curated mapping, split, metrics, primary estimand, bootstrap settings, consistency checks, adjudication selection rule (seed 20261120)
+  - No prompt or rule changes. The known HER2 "POSITIVE (2+)" → equivocal prompt issue stays as a documented limitation.
+- **Code changes, limited to the provider layer** (`src/prel/llm.py`, `src/prel/analysis.py` cost summary, budget arguments):
+  - OpenAI client; the hard-coded Azure endpoint and subscription defaults are removed
+  - provider and snapshot added to the cache key
+  - cached-input tokens logged from `usage.prompt_tokens_details`, with cost at the cached-input rate
+  - USD 6 budget cap with an in-run stop
+- **What is re-run.** Rules (deterministic) and both LLM arms on the 258 held-out test reports, once, against the new freeze commit recorded in `results/freeze.json`. Dev LLM iteration (prompt v2 → v3 on 80 dev reports) happened on the superseded endpoint and is not repeated; the prompt is frozen.
+- **Status of the old results.** The v1.0 test results are moved to `results/superseded_azure/` and kept only for comparison. The headline results are the replication. Agreement between the two runs will be reported in `results/replication_vs_superseded.json`: primary estimate, and field-level identity of extracted values per model.
+- **Adjudication sample.** Regenerated with the identical selection rule. Items that changed relative to the superseded sample are listed.

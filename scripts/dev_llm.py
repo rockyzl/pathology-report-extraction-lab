@@ -7,7 +7,7 @@ from prel import evaluate as E
 model = sys.argv[1] if len(sys.argv) > 1 else "gpt-4.1"
 rep, gold, mem, texts = E.load_all()
 pids = mem["llm_dev_sample"]
-pred, recs = E.run_llm(model, pids, texts, budget_usd=10.0)
+pred, recs = E.run_llm(model, pids, texts, budget_usd=6.0)
 rules = E.run_rules(pids, texts)
 print("LLM", model); print(E.fmt(E.tables(pids, gold, pred)))
 print("rules (same 80)"); print(E.fmt(E.tables(pids, gold, rules)))

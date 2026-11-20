@@ -1,9 +1,9 @@
 # pathology-report-extraction-lab
 
-This is a personal clinical-NLP evaluation prototype built on public TCGA data. It extracts a fixed 12-field schema from OCR'd TCGA breast-cancer (BRCA) pathology reports with two methods:
+This is an independent clinical-NLP evaluation prototype built on public TCGA data. It was implemented by an AI coding agent under Lu Zhang's direction; see [`docs/ai-assisted-engineering.md`](docs/ai-assisted-engineering.md). It extracts a fixed 12-field schema from OCR'd TCGA breast-cancer (BRCA) pathology reports with two methods:
 
 1. a **rules/regex baseline**
-2. a **quote-grounded LLM extractor**: Azure OpenAI gpt-4.1 as the primary model and gpt-4o as the secondary, both with strict JSON-schema output
+2. a **quote-grounded LLM extractor**: OpenAI API snapshots `gpt-4.1-2025-04-14` as the primary model and `gpt-4o-2024-11-20` as the secondary, both with strict JSON-schema output
 
 Both extractors are scored against **curated TCGA clinical fields** under a protocol written down before the test set was used: a patient-level dev/test split, a one-shot held-out test, Cohen's kappa, and paired patient-bootstrap CIs.
 
@@ -79,7 +79,7 @@ The curated values themselves violate the score→status and count→pN checks i
 - **Single run** per model at temperature 0; run-to-run variance not measured. Dev LLM iteration used only 80 patients and two prompt versions.
 - **Grounding checks are lexical**: they prove the quote exists and mentions the field, not that it entails the value (see the HER2 2+ errors).
 - **Error-source tags are heuristics**, not adjudications. Node counts summed across specimens are inherently hard to evidence with short quotes.
-- **Cost** is list price × logged tokens; actual Azure billing was not checked. Latency includes rate-limit back-off on a low-quota personal deployment.
+- **Cost** is list price × logged API usage; actual billing was not checked. Latency includes SDK retry back-off.
 - Public, de-identified TCGA research data only; no PHI/EHR. Not a clinical tool.
 
 ## Not done
@@ -90,13 +90,14 @@ The curated values themselves violate the score→status and count→pN checks i
 
 ## Design in one screen
 
-- **Data:** 1,034 TCGA-BRCA patients, one OCR'd pathology report each, from TCGA-Reports (Kefeli & Tatonetti 2024, CC BY 4.0). The curated reference is the UCSC Xena `BRCA_clinicalMatrix` (TCGA BCR clinical data). URLs and SHA-256 hashes are in `data/manifest.json`. The data are public and de-identified. They are not PHI and not EHR data.
+- **Data:** 1,034 TCGA-BRCA patients, one OCR'd pathology report each, from TCGA-Reports (Kefeli & Tatonetti 2024, CC BY 4.0). The curated reference is the UCSC Xena `BRCA_clinicalMatrix` (TCGA BCR clinical data). URLs and a SHA-256 hash for each of the 4 source files are in `data/manifest.json`. The data are public and de-identified. They are not PHI and not EHR data.
 - **Split:** patient-level and deterministic, by SHA-256 of the patient ID: 776 dev and 258 test patients (`data/membership.json`, re-derived in tests).
   - The rules were tuned on dev.
   - The LLM prompt was tuned on an 80-patient dev sample only (prompt v2 → v3).
   - The test set was extracted and scored once, after the freeze commit (`results/freeze.json`).
+- **LLM workload:** the cohort is 1,034 reports, but only the rules ran on all of them. In the current (replication) run, gpt-4.1 and gpt-4o each processed the 258 test reports. Prompt iteration used gpt-4.1 on 80 dev reports in the superseded run, so gpt-4.1 has seen 338 reports in total (80 dev + 258 test).
 - **Schema:** ER, PR, HER2 IHC status, HER2 IHC score, HER2 ISH status, histologic type, pT, pN, laterality, margin status, nodes examined, nodes positive. Every field allows an explicit `not_stated`. The curated-value mapping is in `docs/protocol.md` and `src/prel/schema.py`.
-- **Grounding (both extractors):** every value must cite at least one quote. The code itself locates the quote in the report and computes the character offsets. The match must be exact, or exact after collapsing whitespace, with no fuzzy matching. The quote must also contain a field cue and, for counts, the number. A failure becomes a *rejected* abstention, which is reported separately from `not_stated`.
+- **Grounding (both extractors):** every value must cite at least one quote. The code locates each quote in the report and computes the character offsets itself. The match must be exact, or exact after collapsing whitespace, with no fuzzy matching. The quote must also contain a field keyword (cue regex) and, for a single-quote count, the number. This checks that the quote **exists** in the report and mentions the field. It does **not** check that the quote supports the specific value. A failure becomes a *rejected* abstention, which is reported separately from `not_stated`.
 - **Primary metric:** per field, end-to-end agreement = agreeing answers / patients with a curated value. Abstentions count against the extractor, so abstaining cannot inflate the score. Agreement among answered patients, coverage and kappa are reported next to it.
 - **Primary comparison:** macro end-to-end agreement over the 10 categorical fields, gpt-4.1 minus rules, with a paired patient bootstrap (B = 2000) for the 95% CI.
 - **Cross-field consistency checks** (not relation extraction): positive nodes ≤ examined nodes, pN vs the positive-node-count bucket, and HER2 IHC score vs status.
@@ -108,12 +109,12 @@ uv sync
 uv run python scripts/build_data.py        # copy/download + verify inputs, build cohort + split
 uv run pytest -q                           # unit tests
 uv run python scripts/run_eval.py dev      # dev tables (LLM part reads the cache)
-uv run python scripts/run_eval.py test     # one-shot test run (needs Azure CLI login; measured USD 4.39 uncached: 1.95 gpt-4.1 + 2.44 gpt-4o)
+uv run python scripts/run_eval.py test     # one-shot test run (needs OPENAI_API_KEY; see results/llm_spend.json for measured cost)
 uv run python scripts/make_report.py       # results/results_tables.md
 uv run python scripts/spend.py             # results/llm_spend.json
 ```
 
-**LLM access.** The model is a personal Azure OpenAI deployment. Calls use a short-lived token from `az account get-access-token`, with the subscription passed explicitly, and no API key is read. Ambient `OPENAI_API_KEY` / `AZURE_OPENAI_API_KEY` values are removed from the process environment. Settings are temperature 0 and seed 0. Every response is cached in `results/cache/llm_cache.jsonl`, which is gitignored because it contains report text. See `.env.example`.
+**LLM access.** The current results call the official OpenAI API (`https://api.openai.com/v1`, fixed in code) with `OPENAI_API_KEY` from the environment, using pinned snapshots `gpt-4.1-2025-04-14` and `gpt-4o-2024-11-20`, temperature 0, seed 0. Every response is cached in `results/cache/llm_cache.jsonl` (gitignored: it contains report text). An earlier run used the same snapshots through a provisional Azure OpenAI endpoint; it is superseded and kept only for comparison in `results/superseded_azure/` (see `docs/protocol.md`, Addendum 2). See `.env.example`.
 
 ## Layout
 
@@ -121,7 +122,7 @@ uv run python scripts/spend.py             # results/llm_spend.json
 src/prel/schema.py      fields, curated-value mapping, grounding cues
 src/prel/grounding.py   quote location + support checks
 src/prel/rules.py       regex baseline
-src/prel/llm.py         prompt, strict JSON schema, keyless Azure client, cache, cost
+src/prel/llm.py         prompt, strict JSON schema, OpenAI client (pinned snapshots), cache, cost
 src/prel/metrics.py     agreement, kappa, paired bootstrap
 src/prel/analysis.py    consistency checks, cost summary, error tags, adjudication sample
 scripts/                build_data, dev_rules, dev_llm, dev_errors, run_eval, make_report, spend

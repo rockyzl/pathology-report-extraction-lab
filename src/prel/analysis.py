@@ -39,10 +39,12 @@ def cost_summary(recs: list[dict]) -> dict:
         a = np.asarray(xs, dtype=float)
         return {"mean": float(a.mean()), "median": float(np.median(a)), "p95": float(np.percentile(a, 95)), "total": float(a.sum())}
     return {"n_reports": len(recs), "input_tokens": stats([r["input_tokens"] for r in recs]),
+            "cached_input_tokens": stats([r.get("cached_input_tokens", 0) for r in recs]),
             "output_tokens": stats([r["output_tokens"] for r in recs]), "seconds": stats([r["seconds"] for r in recs]),
             "cost_usd": stats([r["cost_usd"] for r in recs]),
             "finish_not_stop": sum(r["finish_reason"] != "stop" for r in recs),
-            "deployment_models": sorted({r["deployment_model"] for r in recs})}
+            "deployment_models": sorted({r["deployment_model"] for r in recs}),
+            "providers": sorted({r.get("provider", "azure_openai_superseded") for r in recs})}
 
 
 _OCR = re.compile(r"[^\x00-\x7f]|\bp[TN]\s?[OoIl]\b|\b[pP]T[Il][a-d]?\b|\d[Oo]\b|\b[Oo]\d")

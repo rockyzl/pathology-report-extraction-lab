@@ -157,12 +157,12 @@
     },
     "gpt-4.1": {
       "role": "primary LLM",
-      "deployment": "gpt-4.1 (model gpt-4.1-2025-04-14) on a personal Azure OpenAI resource",
+      "deployment": "pinned snapshot gpt-4.1-2025-04-14 via the OpenAI API (Addendum 2; v1.0 used a provisional Azure OpenAI endpoint, superseded)",
       "prompt_version": "v3"
     },
     "gpt-4o": {
       "role": "secondary LLM",
-      "deployment": "gpt-4o (model gpt-4o-2024-11-20)",
+      "deployment": "pinned snapshot gpt-4o-2024-11-20 via the OpenAI API (Addendum 2; v1.0 used a provisional Azure OpenAI endpoint, superseded)",
       "prompt_version": "v3"
     },
     "llm_settings": {
@@ -170,8 +170,7 @@
       "seed": 0,
       "max_tokens": 3000,
       "response_format": "json_schema strict=true",
-      "api_version": "2024-10-21",
-      "auth": "short-lived Azure CLI bearer token, subscription passed explicitly, no API key"
+      "auth": "OPENAI_API_KEY from the environment, base_url https://api.openai.com/v1 passed explicitly (Addendum 2)"
     }
   },
   "grounding": {
@@ -218,16 +217,30 @@
     "prices_usd_per_1M_tokens": {
       "gpt-4.1": {
         "input": 2.0,
+        "cached_input": 0.5,
         "output": 8.0
       },
       "gpt-4o": {
         "input": 2.5,
+        "cached_input": 1.25,
         "output": 10.0
       }
     },
-    "price_source": "Azure OpenAI list prices (global standard) as published at the time; actual billing not checked",
+    "price_source": "OpenAI API standard list prices (cached-input rate applied to usage.prompt_tokens_details.cached_tokens); actual billing not checked",
     "reported": "per-report input/output tokens, latency, USD (mean, median, p95) per model on the test set",
     "budget": "total LLM spend < USD 10; gpt-4.1 on the 80-patient dev sample (iteration) and on all 258 test reports; gpt-4o on all 258 test reports only; responses cached to results/cache/llm_cache.jsonl"
   },
-  "failed_calls": "API errors are retried up to 8 times; a report whose call still fails is re-run until success; a non-'stop' finish or invalid JSON makes every field 'rejected' for that report"
+  "failed_calls": "API errors are retried up to 8 times; a report whose call still fails is re-run until success; a non-'stop' finish or invalid JSON makes every field 'rejected' for that report",
+  "addenda": [
+    {
+      "id": 1,
+      "date": "2026-11-20",
+      "summary": "429 failed calls re-run per rule; two descriptive error tags; post hoc analyses labelled"
+    },
+    {
+      "id": 2,
+      "date": "2026-11-20",
+      "summary": "provider change Azure OpenAI (provisional, superseded) -> OpenAI API with the same pinned snapshots; everything else frozen; test re-run once; budget cap USD 6"
+    }
+  ]
 }
