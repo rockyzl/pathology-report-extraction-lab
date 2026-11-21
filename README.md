@@ -11,7 +11,7 @@ Both extractors are scored against **curated TCGA clinical fields** under a prot
 
 ## Results (held-out test, 258 patients; OpenAI API replication, run once)
 
-Provider: OpenAI API, pinned snapshots `gpt-4.1-2025-04-14` / `gpt-4o-2024-11-20`, frozen commit `e26bfcb` (`results/freeze.json`, protocol Addendum 2). These replace the superseded v1.0 run (same snapshots, prompt, schema, rules and analysis via a provisional Azure OpenAI endpoint), which is kept for comparison in `results/superseded_azure/`.
+Provider: OpenAI API, pinned snapshots `gpt-4.1-2025-04-14` / `gpt-4o-2024-11-20`, frozen commit `e26bfcb` (original ID, now `952d90c`; recorded in `results/freeze.json`, protocol Addendum 2; ID mapping in [`docs/commit-map.md`](docs/commit-map.md)). These replace the superseded v1.0 run (same snapshots, prompt, schema, rules and analysis via a provisional Azure OpenAI endpoint), which is kept for comparison in `results/superseded_azure/`.
 
 Full tables: [`results/results_tables.md`](results/results_tables.md); raw numbers: `results/test_results.json`; comparison with the superseded run: `results/replication_vs_superseded.json`.
 
@@ -71,7 +71,8 @@ The curated values themselves are inconsistent with the score→status and count
 
 ### What was verified on the test run
 
-- Extraction ran against frozen commit `e26bfcb`; the runner refuses to run if `src/` or `protocol.json` changed since. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze `1fb21c1`.
+- Extraction ran against frozen commit `e26bfcb` (now `952d90c`); the runner refuses to run if `src/` or `protocol.json` changed since. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze `1fb21c1` (now `80a785b`).
+- Commit IDs in result files and docs are original IDs from before the pre-publication history rewrite; [`docs/commit-map.md`](docs/commit-map.md) maps them to this history, and `scripts/run_eval.py` resolves the recorded freeze through it.
 - Finish reason `stop` for all calls (non-stop: gpt-4.1 0, gpt-4o 0); served model versions logged per response: gpt-4.1-2025-04-14, gpt-4o-2024-11-20.
 - An earlier replication attempt was blocked by `insufficient_quota` with zero responses (`docs/protocol.md`, Addendum 2 run log).
 
@@ -137,7 +138,7 @@ scripts/                build_data, dev_rules, dev_llm, dev_errors, run_eval, ma
 results/                dev_results.json, freeze.json, test_results.json, results_tables.md,
                         adjudication_sample.{md,csv}, llm_spend.json, replication_vs_superseded.json,
                         superseded_azure/ (superseded v1.0 run, comparison only)
-docs/                   protocol.md (prespecified), ai-assisted-engineering.md
+docs/                   protocol.md (prespecified), ai-assisted-engineering.md, commit-map.md
 ```
 
 ## License and attribution

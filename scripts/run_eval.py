@@ -27,6 +27,20 @@ def git(*a):
     return subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
 
 
+def resolve_commit(sha):
+    """Return an existing commit for a recorded ID. IDs recorded before the 2026-11-20 history rewrite no longer
+    exist; they are mapped to their rewritten commit through docs/commit-map.md (original or pass-1 ID -> final)."""
+    hit = subprocess.run(["git", "rev-parse", "--verify", "--quiet", f"{sha}^{{commit}}"], cwd=ROOT,
+                         capture_output=True, text=True)
+    if hit.returncode == 0:
+        return hit.stdout.strip()
+    for line in (ROOT / "docs" / "commit-map.md").read_text().splitlines():
+        cells = [c.strip(" `") for c in line.strip().strip("|").split("|")]
+        if len(cells) >= 3 and any(len(c) >= 7 and sha.startswith(c) for c in cells[:2]):
+            return git("rev-parse", "--verify", f"{cells[2]}^{{commit}}")
+    sys.exit(f"frozen commit {sha} is not in this repository or in docs/commit-map.md")
+
+
 def jdump(obj, path):
     path.write_text(json.dumps(obj, indent=2, default=lambda o: o.item() if hasattr(o, "item") else str(o)) + "\n")
 
@@ -63,7 +77,7 @@ def freeze():
 
 def test():
     fz = json.loads((RES / "freeze.json").read_text())
-    code_diff = git("diff", "--stat", fz["frozen_commit"], "HEAD", "--", "src", "protocol.json")
+    code_diff = git("diff", "--stat", resolve_commit(fz["frozen_commit"]), "HEAD", "--", "src", "protocol.json")
     if code_diff:
         sys.exit(f"src/ or protocol.json changed since freeze:\n{code_diff}")
     rep, gold, mem, texts = E.load_all()

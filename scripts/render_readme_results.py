@@ -8,6 +8,15 @@ C = json.loads((ROOT / "results/replication_vs_superseded.json").read_text())
 SP = json.loads((ROOT / "results/llm_spend.json").read_text())
 PH = json.loads((ROOT / "results/posthoc_rejections.json").read_text())
 M = ["rules", "gpt-4.1", "gpt-4o"]
+# original (pre-rewrite) commit ID -> final ID, from docs/commit-map.md
+CMAP = {c[0]: c[2] for c in ([x.strip(" `") for x in ln.strip().strip("|").split("|")]
+                             for ln in (ROOT / "docs/commit-map.md").read_text().splitlines()) if len(c) >= 3 and len(c[0]) == 7}
+
+
+def cid(sha):
+    """Cite a recorded commit ID with its final ID after the history rewrite."""
+    s = sha[:7]
+    return f"`{s}` (now `{CMAP[s]}`)" if s in CMAP and CMAP[s] != s else f"`{s}`"
 
 
 def f3(x):
@@ -19,7 +28,7 @@ def ci(d):
 
 
 L = ["## Results (held-out test, 258 patients; OpenAI API replication, run once)", "",
-     f"Provider: OpenAI API, pinned snapshots `gpt-4.1-2025-04-14` / `gpt-4o-2024-11-20`, frozen commit `{R['frozen_commit'][:7]}` (`results/freeze.json`, protocol Addendum 2). "
+     f"Provider: OpenAI API, pinned snapshots `gpt-4.1-2025-04-14` / `gpt-4o-2024-11-20`, frozen commit `{R['frozen_commit'][:7]}` (original ID, now `{CMAP[R['frozen_commit'][:7]]}`; recorded in `results/freeze.json`, protocol Addendum 2; ID mapping in [`docs/commit-map.md`](docs/commit-map.md)). "
      "These replace the superseded v1.0 run (same snapshots, prompt, schema, rules and analysis via a provisional Azure OpenAI endpoint), which is kept for comparison in `results/superseded_azure/`.", "",
      "Full tables: [`results/results_tables.md`](results/results_tables.md); raw numbers: `results/test_results.json`; comparison with the superseded run: `results/replication_vs_superseded.json`.", "",
      "Per-field **end-to-end agreement** with curated values (abstentions count as non-agreement) / **coverage** / **Cohen's κ** (over answered):", "",
@@ -72,7 +81,8 @@ L += ["### How to read this", "",
       f"Relative to the superseded sample, {len(A['kept'])} items are kept, {len(A['added'])} added, {len(A['dropped'])} dropped (`replication_vs_superseded.json → adjudication_sample`). "
       "The agent pre-read of the superseded sample (`results/superseded_azure/adjudication_agent_preread.md`) is not an adjudication.", "",
       "### What was verified on the test run", "",
-      f"- Extraction ran against frozen commit `{R['frozen_commit'][:7]}`; the runner refuses to run if `src/` or `protocol.json` changed since. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze `1fb21c1`.",
+      f"- Extraction ran against frozen commit {cid(R['frozen_commit'])}; the runner refuses to run if `src/` or `protocol.json` changed since. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze {cid('1fb21c1')}.",
+      "- Commit IDs in result files and docs are original IDs from before the pre-publication history rewrite; [`docs/commit-map.md`](docs/commit-map.md) maps them to this history, and `scripts/run_eval.py` resolves the recorded freeze through it.",
       f"- Finish reason `stop` for all calls (non-stop: gpt-4.1 {R['cost']['gpt-4.1']['finish_not_stop']}, gpt-4o {R['cost']['gpt-4o']['finish_not_stop']}); served model versions logged per response: "
       f"{', '.join(R['cost']['gpt-4.1']['deployment_models'] + R['cost']['gpt-4o']['deployment_models'])}.",
       "- An earlier replication attempt was blocked by `insufficient_quota` with zero responses (`docs/protocol.md`, Addendum 2 run log).", ""]

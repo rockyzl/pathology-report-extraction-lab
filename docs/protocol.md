@@ -136,6 +136,7 @@ The tags are not adjudicated.
 
 - **Why.** The v1.0 LLM runs used a provisional Azure OpenAI endpoint that is no longer used. Earlier text called it "personal"; that was inaccurate and has been removed. That endpoint must no longer be used.
 - **Change.** The provider is now the official OpenAI API (`https://api.openai.com/v1`), authenticated with `OPENAI_API_KEY` from the project owner's OpenAI account. The pinned model snapshots are the same as the superseded deployments: `gpt-4.1-2025-04-14` and `gpt-4o-2024-11-20`.
+- *Editorial note (2026-11-20, before publication):* the provider description in the two bullets above was reworded for neutrality. No change to methods, executable code, freeze or results. The rewording was applied to every commit by the pre-publication history rewrite (`docs/commit-map.md`), so earlier commits show the reworded text as well.
 - **Frozen, unchanged:**
   - prompt v3 (`SYSTEM_PROMPT` text identical)
   - JSON schema, strict mode, temperature 0, seed 0, max_tokens 3000
