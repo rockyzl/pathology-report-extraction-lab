@@ -116,6 +116,9 @@ uv run python scripts/run_eval.py dev      # dev tables (LLM part reads the cach
 uv run python scripts/run_eval.py test     # one-shot test run (needs OPENAI_API_KEY; see results/llm_spend.json for measured cost)
 uv run python scripts/make_report.py       # results/results_tables.md
 uv run python scripts/spend.py             # results/llm_spend.json
+uv run python scripts/posthoc.py           # results/posthoc_rejections.json (post hoc)
+uv run python scripts/compare_superseded.py  # results/replication_vs_superseded.json
+uv run python scripts/render_readme_results.py  # regenerate this README's results section
 ```
 
 **LLM access.** The current results call the official OpenAI API (`https://api.openai.com/v1`, fixed in code) with `OPENAI_API_KEY` from the environment, using pinned snapshots `gpt-4.1-2025-04-14` and `gpt-4o-2024-11-20`, temperature 0, seed 0. Every response is cached in `results/cache/llm_cache.jsonl` (gitignored: it contains report text). An earlier run used the same snapshots through a provisional Azure OpenAI endpoint; it is superseded and kept only for comparison in `results/superseded_azure/` (see `docs/protocol.md`, Addendum 2). See `.env.example`.
@@ -129,9 +132,11 @@ src/prel/rules.py       regex baseline
 src/prel/llm.py         prompt, strict JSON schema, OpenAI client (pinned snapshots), cache, cost
 src/prel/metrics.py     agreement, kappa, paired bootstrap
 src/prel/analysis.py    consistency checks, cost summary, error tags, adjudication sample
-scripts/                build_data, dev_rules, dev_llm, dev_errors, run_eval, make_report, spend
+scripts/                build_data, dev_rules, dev_llm, dev_errors, run_eval, make_report, spend, posthoc,
+                        compare_superseded, render_readme_results
 results/                dev_results.json, freeze.json, test_results.json, results_tables.md,
-                        adjudication_sample.{md,csv}, llm_spend.json
+                        adjudication_sample.{md,csv}, llm_spend.json, replication_vs_superseded.json,
+                        superseded_azure/ (superseded v1.0 run, comparison only)
 docs/                   protocol.md (prespecified), ai-assisted-engineering.md
 ```
 
