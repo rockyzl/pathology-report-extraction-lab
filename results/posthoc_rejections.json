@@ -1,0 +1,15 @@
+{
+  "label": "post hoc, not prespecified; test set, after the one-shot run",
+  "gpt-4.1": {
+    "rejected": 106,
+    "claimed_equals_curated": 92,
+    "claimed_differs": 8,
+    "no_curated": 6
+  },
+  "gpt-4o": {
+    "rejected": 178,
+    "claimed_equals_curated": 140,
+    "claimed_differs": 27,
+    "no_curated": 11
+  }
+}

@@ -15,7 +15,8 @@ def ci(d):
     return f"{d['diff']:+.3f} [{d['ci_low']:+.3f}, {d['ci_high']:+.3f}]"
 
 
-L = [f"# Held-out test results (n = {R['n_test']} patients, frozen commit `{R['frozen_commit'][:7]}`)", "",
+PROV = ", ".join(sorted({p for m in ("gpt-4.1", "gpt-4o") for p in R["cost"][m].get("providers", ["azure_openai_superseded"])}))
+L = [f"# Held-out test results (n = {R['n_test']} patients, frozen commit `{R['frozen_commit'][:7]}`, LLM provider: {PROV})", "",
      "Agreement with curated TCGA clinical fields, **not accuracy**. e2e = agreeing answers / patients with a curated value",
      "(not_stated and grounding rejections count as non-agreement). ans = agreement among answered. κ = Cohen's kappa over answered.", ""]
 L.append("## Per-field agreement")
@@ -67,15 +68,15 @@ for c in ["positive_le_examined", "pn_vs_positive_count", "her2_score_vs_status"
 L.append("")
 L.append("## Cost and latency per report (test set)")
 L.append("")
-L.append("| model | reports | input tokens mean (p95) | output tokens mean (p95) | latency s mean / median / p95 | USD mean | USD total |")
-L.append("|---|---|---|---|---|---|---|")
+L.append("| model | reports | input tokens mean (p95) | cached input tokens mean | output tokens mean (p95) | latency s mean / median / p95 | USD mean | USD total |")
+L.append("|---|---|---|---|---|---|---|---|")
 for m in ["gpt-4.1", "gpt-4o"]:
     c = R["cost"][m]
     L.append(f"| {m} ({', '.join(c['deployment_models'])}) | {c['n_reports']} | {c['input_tokens']['mean']:.0f} ({c['input_tokens']['p95']:.0f}) | "
-             f"{c['output_tokens']['mean']:.0f} ({c['output_tokens']['p95']:.0f}) | {c['seconds']['mean']:.2f} / {c['seconds']['median']:.2f} / {c['seconds']['p95']:.2f} | "
+             f"{c.get('cached_input_tokens', {}).get('mean', 0):.0f} | {c['output_tokens']['mean']:.0f} ({c['output_tokens']['p95']:.0f}) | {c['seconds']['mean']:.2f} / {c['seconds']['median']:.2f} / {c['seconds']['p95']:.2f} | "
              f"{c['cost_usd']['mean']:.4f} | {c['cost_usd']['total']:.2f} |")
 L.append("")
-L.append("Latency is wall-clock per call with 2 concurrent workers and SDK retries on HTTP 429, so it includes rate-limit back-off.")
+L.append("Latency is wall-clock per call with 2 concurrent workers, including any SDK retry back-off. Cost = API usage x list price (cached-input rate where reported); billing not checked.")
 L.append("")
 L.append("## Automatic error-source tags (unadjudicated heuristics; one disagreement can carry several tags)")
 L.append("")

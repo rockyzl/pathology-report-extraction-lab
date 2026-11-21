@@ -1,0 +1,435 @@
+{
+  "label": "descriptive comparison: OpenAI API replication vs superseded provisional-Azure v1.0 run (same snapshots, prompt, schema, rules, analysis)",
+  "primary": {
+    "replication": {
+      "diff": 0.15304791455978822,
+      "ci_low": 0.13351142269947683,
+      "ci_high": 0.1729172794113927,
+      "a": 0.5965578467325191,
+      "b": 0.4435099321727309,
+      "decision": "gpt-4.1 higher agreement"
+    },
+    "superseded": {
+      "diff": 0.15586776322634893,
+      "ci_low": 0.13588595663074454,
+      "ci_high": 0.17646979607037158,
+      "a": 0.5993776953990798,
+      "b": 0.4435099321727309,
+      "decision": "gpt-4.1 higher agreement"
+    }
+  },
+  "secondary_gpt41_minus_gpt4o": {
+    "replication": {
+      "diff": 0.003711523521721216,
+      "ci_low": -0.006932459549888703,
+      "ci_high": 0.014322431942902822,
+      "n_boot": 2000,
+      "seed": 20261120,
+      "a": 0.5965578467325191,
+      "b": 0.5928463232107979,
+      "p_boot_le_0": 0.258
+    },
+    "superseded": {
+      "diff": -0.0001784019885244792,
+      "ci_low": -0.010804315846622906,
+      "ci_high": 0.009247459924943817,
+      "n_boot": 2000,
+      "seed": 20261120,
+      "a": 0.5993776953990798,
+      "b": 0.5995560973876043,
+      "p_boot_le_0": 0.513
+    }
+  },
+  "macro_e2e": {
+    "rules": {
+      "replication": {
+        "categorical10": 0.4435099321727309,
+        "all12": 0.4235384600026073
+      },
+      "superseded": {
+        "categorical10": 0.4435099321727309,
+        "all12": 0.4235384600026073
+      }
+    },
+    "gpt-4.1": {
+      "replication": {
+        "categorical10": 0.5965578467325191,
+        "all12": 0.6183331588611393
+      },
+      "superseded": {
+        "categorical10": 0.5993776953990798,
+        "all12": 0.6150432197471131
+      }
+    },
+    "gpt-4o": {
+      "replication": {
+        "categorical10": 0.5928463232107979,
+        "all12": 0.6099809270940167
+      },
+      "superseded": {
+        "categorical10": 0.5995560973876043,
+        "all12": 0.614447840451836
+      }
+    }
+  },
+  "grounding": {
+    "gpt-4.1": {
+      "replication": {
+        "claimed_values": 2075,
+        "rejected": 106,
+        "rejection_rate_of_claims": 0.05108433734939759,
+        "not_stated": 1021
+      },
+      "superseded": {
+        "claimed_values": 2081,
+        "rejected": 103,
+        "rejection_rate_of_claims": 0.049495434887073524,
+        "not_stated": 1015
+      }
+    },
+    "gpt-4o": {
+      "replication": {
+        "claimed_values": 2128,
+        "rejected": 178,
+        "rejection_rate_of_claims": 0.08364661654135339,
+        "not_stated": 968
+      },
+      "superseded": {
+        "claimed_values": 2138,
+        "rejected": 149,
+        "rejection_rate_of_claims": 0.06969130028063611,
+        "not_stated": 958
+      }
+    }
+  },
+  "per_field_e2e": {
+    "gpt-4.1": {
+      "er_status": {
+        "replication": 0.5708502024291497,
+        "superseded": 0.5668016194331984
+      },
+      "pr_status": {
+        "replication": 0.5141700404858299,
+        "superseded": 0.5141700404858299
+      },
+      "her2_ihc_status": {
+        "replication": 0.3607305936073059,
+        "superseded": 0.3744292237442922
+      },
+      "her2_ihc_score": {
+        "replication": 0.36942675159235666,
+        "superseded": 0.36942675159235666
+      },
+      "her2_ish_status": {
+        "replication": 0.2767857142857143,
+        "superseded": 0.26785714285714285
+      },
+      "histologic_type": {
+        "replication": 0.9534883720930233,
+        "superseded": 0.9496124031007752
+      },
+      "pathologic_t": {
+        "replication": 0.6744186046511628,
+        "superseded": 0.6705426356589147
+      },
+      "pathologic_n": {
+        "replication": 0.6744186046511628,
+        "superseded": 0.7015503875968992
+      },
+      "laterality": {
+        "replication": 0.8992248062015504,
+        "superseded": 0.8992248062015504
+      },
+      "margin_status": {
+        "replication": 0.6720647773279352,
+        "superseded": 0.680161943319838
+      },
+      "ln_examined": {
+        "replication": 0.6964285714285714,
+        "superseded": 0.6607142857142857
+      },
+      "ln_positive": {
+        "replication": 0.7579908675799086,
+        "superseded": 0.726027397260274
+      }
+    },
+    "gpt-4o": {
+      "er_status": {
+        "replication": 0.5587044534412956,
+        "superseded": 0.5668016194331984
+      },
+      "pr_status": {
+        "replication": 0.46558704453441296,
+        "superseded": 0.4939271255060729
+      },
+      "her2_ihc_status": {
+        "replication": 0.4292237442922374,
+        "superseded": 0.4383561643835616
+      },
+      "her2_ihc_score": {
+        "replication": 0.36942675159235666,
+        "superseded": 0.37579617834394907
+      },
+      "her2_ish_status": {
+        "replication": 0.2767857142857143,
+        "superseded": 0.2767857142857143
+      },
+      "histologic_type": {
+        "replication": 0.9457364341085271,
+        "superseded": 0.9496124031007752
+      },
+      "pathologic_t": {
+        "replication": 0.6744186046511628,
+        "superseded": 0.6744186046511628
+      },
+      "pathologic_n": {
+        "replication": 0.7054263565891473,
+        "superseded": 0.7209302325581395
+      },
+      "laterality": {
+        "replication": 0.8837209302325582,
+        "superseded": 0.8875968992248062
+      },
+      "margin_status": {
+        "replication": 0.6194331983805668,
+        "superseded": 0.611336032388664
+      },
+      "ln_examined": {
+        "replication": 0.6607142857142857,
+        "superseded": 0.6517857142857143
+      },
+      "ln_positive": {
+        "replication": 0.730593607305936,
+        "superseded": 0.726027397260274
+      }
+    }
+  },
+  "cell_identity": {
+    "gpt-4.1": {
+      "cells": 3096,
+      "identical": 2991,
+      "rate": 0.9660852713178295,
+      "categorical_rate": 0.9705426356589147,
+      "per_field_rate": {
+        "er_status": 0.9961240310077519,
+        "pr_status": 0.9728682170542635,
+        "her2_ihc_status": 0.9573643410852714,
+        "her2_ihc_score": 0.9689922480620154,
+        "her2_ish_status": 0.9883720930232558,
+        "histologic_type": 0.9806201550387597,
+        "pathologic_t": 0.9806201550387597,
+        "pathologic_n": 0.9108527131782945,
+        "laterality": 0.9844961240310077,
+        "margin_status": 0.9651162790697675,
+        "ln_examined": 0.937984496124031,
+        "ln_positive": 0.9496124031007752
+      }
+    },
+    "gpt-4o": {
+      "cells": 3096,
+      "identical": 2964,
+      "rate": 0.9573643410852714,
+      "categorical_rate": 0.9643410852713178,
+      "per_field_rate": {
+        "er_status": 0.9806201550387597,
+        "pr_status": 0.9534883720930233,
+        "her2_ihc_status": 0.9728682170542635,
+        "her2_ihc_score": 0.9767441860465116,
+        "her2_ish_status": 1.0,
+        "histologic_type": 0.9651162790697675,
+        "pathologic_t": 0.9883720930232558,
+        "pathologic_n": 0.9031007751937985,
+        "laterality": 0.9806201550387597,
+        "margin_status": 0.9224806201550387,
+        "ln_examined": 0.9186046511627907,
+        "ln_positive": 0.9263565891472868
+      }
+    }
+  },
+  "rules_identical": true,
+  "adjudication_sample": {
+    "n_new": 30,
+    "n_old": 30,
+    "kept": [
+      [
+        "TCGA-A2-A0D0",
+        "her2_ihc_score"
+      ],
+      [
+        "TCGA-A2-A0ST",
+        "margin_status"
+      ],
+      [
+        "TCGA-A2-A0SV",
+        "pathologic_t"
+      ],
+      [
+        "TCGA-A2-A3KD",
+        "pathologic_t"
+      ],
+      [
+        "TCGA-A2-A3XW",
+        "pr_status"
+      ],
+      [
+        "TCGA-AC-A23G",
+        "her2_ish_status"
+      ],
+      [
+        "TCGA-AC-A3TN",
+        "her2_ihc_status"
+      ],
+      [
+        "TCGA-AO-A03R",
+        "pr_status"
+      ],
+      [
+        "TCGA-AR-A1AW",
+        "histologic_type"
+      ],
+      [
+        "TCGA-BH-A18H",
+        "her2_ish_status"
+      ],
+      [
+        "TCGA-E2-A109",
+        "her2_ish_status"
+      ],
+      [
+        "TCGA-E2-A14X",
+        "er_status"
+      ],
+      [
+        "TCGA-E2-A1L6",
+        "her2_ihc_score"
+      ],
+      [
+        "TCGA-E9-A1N4",
+        "histologic_type"
+      ],
+      [
+        "TCGA-EW-A1IW",
+        "er_status"
+      ],
+      [
+        "TCGA-EW-A1PE",
+        "er_status"
+      ],
+      [
+        "TCGA-EW-A423",
+        "pr_status"
+      ],
+      [
+        "TCGA-LL-A50Y",
+        "laterality"
+      ]
+    ],
+    "added": [
+      [
+        "TCGA-A2-A04W",
+        "pathologic_n"
+      ],
+      [
+        "TCGA-BH-A0DD",
+        "laterality"
+      ],
+      [
+        "TCGA-B6-A0IH",
+        "margin_status"
+      ],
+      [
+        "TCGA-E2-A14Y",
+        "ln_examined"
+      ],
+      [
+        "TCGA-B6-A0WW",
+        "ln_positive"
+      ],
+      [
+        "TCGA-BH-A0AZ",
+        "her2_ihc_status"
+      ],
+      [
+        "TCGA-EW-A1IW",
+        "her2_ihc_score"
+      ],
+      [
+        "TCGA-B6-A0RH",
+        "histologic_type"
+      ],
+      [
+        "TCGA-E9-A1N3",
+        "pathologic_n"
+      ],
+      [
+        "TCGA-E2-A1LI",
+        "ln_examined"
+      ],
+      [
+        "TCGA-BH-A0DD",
+        "ln_positive"
+      ],
+      [
+        "TCGA-BH-A42T",
+        "her2_ihc_status"
+      ]
+    ],
+    "dropped": [
+      [
+        "TCGA-E2-A14P",
+        "her2_ihc_score"
+      ],
+      [
+        "TCGA-E2-A154",
+        "pathologic_n"
+      ],
+      [
+        "TCGA-AR-A5QM",
+        "laterality"
+      ],
+      [
+        "TCGA-E2-A1L6",
+        "ln_examined"
+      ],
+      [
+        "TCGA-EW-A1IZ",
+        "ln_positive"
+      ],
+      [
+        "TCGA-AO-A03L",
+        "her2_ihc_status"
+      ],
+      [
+        "TCGA-B6-A0IE",
+        "histologic_type"
+      ],
+      [
+        "TCGA-AQ-A7U7",
+        "pathologic_n"
+      ],
+      [
+        "TCGA-BH-A0DT",
+        "margin_status"
+      ],
+      [
+        "TCGA-AR-A0U1",
+        "ln_examined"
+      ],
+      [
+        "TCGA-EW-A1IW",
+        "ln_positive"
+      ],
+      [
+        "TCGA-BH-A1EX",
+        "her2_ihc_status"
+      ]
+    ],
+    "same_order": false
+  },
+  "conclusion": {
+    "same_primary_decision": true,
+    "primary_diff_change": -0.002819848666560709,
+    "replication_point_inside_superseded_ci": true,
+    "both_ci_above_zero": true
+  }
+}

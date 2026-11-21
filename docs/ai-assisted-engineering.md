@@ -38,6 +38,8 @@ The agent wrote the code, the rules, the prompt, the tests and the documents. It
 | 10 | Provenance | The LLM endpoint was described as a "personal" Azure OpenAI resource in five places, and its subscription ID and endpoint were hard-coded defaults. That description was inaccurate: it was a provisional endpoint, which is no longer used. | Independent review by a separate reviewer agent (read-only) | All "personal" claims and the hard-coded defaults were removed. The LLM arms were re-run once on the official OpenAI API with the same pinned snapshots (`docs/protocol.md`, Addendum 2), and the earlier results were moved to `results/superseded_azure/` for comparison. |
 | 11 | Docs | The reviewer found overclaiming wording: the headline macro covers 10 categorical fields, not 12; "verifies the evidence span" suggested an entailment check; the cohort size (1,034) read as the LLM workload (gpt-4.1: 338 reports); the manifest hashes source files, not individual reports; the schema does not enforce "1–3 quotes". | Independent review | README, protocol and handoff wording corrected. |
 
+| 12 | Replication | The first OpenAI attempt hung: the account had no credit, the SDK retried every `insufficient_quota` 429, and stdout was buffered, so the log stayed empty. | Empty cache after minutes, plus one diagnostic call | The runner now aborts on `insufficient_quota` and flushes its log. Attempt 2 completed after credit was added. |
+
 The test-phase checks are listed in the README under "What was verified on the test run".
 
 ## Known limitations of the engineering

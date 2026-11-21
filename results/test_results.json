@@ -1,0 +1,835 @@
+{
+  "phase": "test",
+  "frozen_commit": "e26bfcb60c5bd1b956e393693cba07244a12d8ab",
+  "n_test": 258,
+  "run_at": "2026-11-21T01:17:27+00:00",
+  "tables": {
+    "rules": {
+      "per_field": {
+        "er_status": {
+          "n_curated": 247,
+          "n_answered": 101,
+          "n_rejected": 0,
+          "n_not_stated": 146,
+          "coverage": 0.4089068825910931,
+          "agreement_e2e": 0.3643724696356275,
+          "agreement_answered": 0.8910891089108911,
+          "kappa_answered": 0.7337646776899113
+        },
+        "pr_status": {
+          "n_curated": 247,
+          "n_answered": 103,
+          "n_rejected": 0,
+          "n_not_stated": 144,
+          "coverage": 0.41700404858299595,
+          "agreement_e2e": 0.3643724696356275,
+          "agreement_answered": 0.8737864077669902,
+          "kappa_answered": 0.7220261573593522
+        },
+        "her2_ihc_status": {
+          "n_curated": 219,
+          "n_answered": 55,
+          "n_rejected": 0,
+          "n_not_stated": 164,
+          "coverage": 0.2511415525114155,
+          "agreement_e2e": 0.2146118721461187,
+          "agreement_answered": 0.8545454545454545,
+          "kappa_answered": 0.6699174793698424
+        },
+        "her2_ihc_score": {
+          "n_curated": 157,
+          "n_answered": 28,
+          "n_rejected": 0,
+          "n_not_stated": 129,
+          "coverage": 0.17834394904458598,
+          "agreement_e2e": 0.12738853503184713,
+          "agreement_answered": 0.7142857142857143,
+          "kappa_answered": 0.5897435897435899
+        },
+        "her2_ish_status": {
+          "n_curated": 112,
+          "n_answered": 13,
+          "n_rejected": 0,
+          "n_not_stated": 99,
+          "coverage": 0.11607142857142858,
+          "agreement_e2e": 0.08928571428571429,
+          "agreement_answered": 0.7692307692307693,
+          "kappa_answered": 0.30357142857142877
+        },
+        "histologic_type": {
+          "n_curated": 258,
+          "n_answered": 216,
+          "n_rejected": 0,
+          "n_not_stated": 42,
+          "coverage": 0.8372093023255814,
+          "agreement_e2e": 0.810077519379845,
+          "agreement_answered": 0.9675925925925926,
+          "kappa_answered": 0.9274541790615104
+        },
+        "pathologic_t": {
+          "n_curated": 258,
+          "n_answered": 159,
+          "n_rejected": 0,
+          "n_not_stated": 99,
+          "coverage": 0.6162790697674418,
+          "agreement_e2e": 0.5813953488372093,
+          "agreement_answered": 0.9433962264150944,
+          "kappa_answered": 0.897367854837553
+        },
+        "pathologic_n": {
+          "n_curated": 258,
+          "n_answered": 146,
+          "n_rejected": 0,
+          "n_not_stated": 112,
+          "coverage": 0.5658914728682171,
+          "agreement_e2e": 0.5503875968992248,
+          "agreement_answered": 0.9726027397260274,
+          "kappa_answered": 0.9581121790273992
+        },
+        "laterality": {
+          "n_curated": 258,
+          "n_answered": 210,
+          "n_rejected": 0,
+          "n_not_stated": 48,
+          "coverage": 0.813953488372093,
+          "agreement_e2e": 0.7906976744186046,
+          "agreement_answered": 0.9714285714285714,
+          "kappa_answered": 0.9427740939231538
+        },
+        "margin_status": {
+          "n_curated": 247,
+          "n_answered": 151,
+          "n_rejected": 0,
+          "n_not_stated": 96,
+          "coverage": 0.611336032388664,
+          "agreement_e2e": 0.5425101214574899,
+          "agreement_answered": 0.8874172185430463,
+          "kappa_answered": 0.2995907230559343
+        },
+        "ln_examined": {
+          "n_curated": 224,
+          "n_answered": 115,
+          "n_rejected": 0,
+          "n_not_stated": 109,
+          "coverage": 0.5133928571428571,
+          "agreement_e2e": 0.24553571428571427,
+          "agreement_answered": 0.4782608695652174,
+          "within1_answered": 0.6260869565217392
+        },
+        "ln_positive": {
+          "n_curated": 219,
+          "n_answered": 112,
+          "n_rejected": 0,
+          "n_not_stated": 107,
+          "coverage": 0.5114155251141552,
+          "agreement_e2e": 0.4018264840182648,
+          "agreement_answered": 0.7857142857142857,
+          "within1_answered": 0.875
+        }
+      },
+      "macro_e2e_categorical": 0.4435099321727309,
+      "macro_e2e_all": 0.4235384600026073,
+      "count_fields": [
+        "ln_examined",
+        "ln_positive"
+      ]
+    },
+    "gpt-4.1": {
+      "per_field": {
+        "er_status": {
+          "n_curated": 247,
+          "n_answered": 142,
+          "n_rejected": 2,
+          "n_not_stated": 103,
+          "coverage": 0.5748987854251012,
+          "agreement_e2e": 0.5708502024291497,
+          "agreement_answered": 0.9929577464788732,
+          "kappa_answered": 0.9815632303297845
+        },
+        "pr_status": {
+          "n_curated": 247,
+          "n_answered": 134,
+          "n_rejected": 10,
+          "n_not_stated": 103,
+          "coverage": 0.5425101214574899,
+          "agreement_e2e": 0.5141700404858299,
+          "agreement_answered": 0.9477611940298507,
+          "kappa_answered": 0.8869061972510247
+        },
+        "her2_ihc_status": {
+          "n_curated": 219,
+          "n_answered": 93,
+          "n_rejected": 25,
+          "n_not_stated": 101,
+          "coverage": 0.4246575342465753,
+          "agreement_e2e": 0.3607305936073059,
+          "agreement_answered": 0.8494623655913979,
+          "kappa_answered": 0.7206608024029179
+        },
+        "her2_ihc_score": {
+          "n_curated": 157,
+          "n_answered": 67,
+          "n_rejected": 0,
+          "n_not_stated": 90,
+          "coverage": 0.4267515923566879,
+          "agreement_e2e": 0.36942675159235666,
+          "agreement_answered": 0.8656716417910447,
+          "kappa_answered": 0.8089353612167299
+        },
+        "her2_ish_status": {
+          "n_curated": 112,
+          "n_answered": 33,
+          "n_rejected": 1,
+          "n_not_stated": 78,
+          "coverage": 0.29464285714285715,
+          "agreement_e2e": 0.2767857142857143,
+          "agreement_answered": 0.9393939393939394,
+          "kappa_answered": 0.8272251308900525
+        },
+        "histologic_type": {
+          "n_curated": 258,
+          "n_answered": 256,
+          "n_rejected": 2,
+          "n_not_stated": 0,
+          "coverage": 0.9922480620155039,
+          "agreement_e2e": 0.9534883720930233,
+          "agreement_answered": 0.9609375,
+          "kappa_answered": 0.9177139918356851
+        },
+        "pathologic_t": {
+          "n_curated": 258,
+          "n_answered": 184,
+          "n_rejected": 5,
+          "n_not_stated": 69,
+          "coverage": 0.7131782945736435,
+          "agreement_e2e": 0.6744186046511628,
+          "agreement_answered": 0.9456521739130435,
+          "kappa_answered": 0.9021172465155868
+        },
+        "pathologic_n": {
+          "n_curated": 258,
+          "n_answered": 183,
+          "n_rejected": 14,
+          "n_not_stated": 61,
+          "coverage": 0.7093023255813954,
+          "agreement_e2e": 0.6744186046511628,
+          "agreement_answered": 0.9508196721311475,
+          "kappa_answered": 0.9219948849104859
+        },
+        "laterality": {
+          "n_curated": 258,
+          "n_answered": 236,
+          "n_rejected": 3,
+          "n_not_stated": 19,
+          "coverage": 0.9147286821705426,
+          "agreement_e2e": 0.8992248062015504,
+          "agreement_answered": 0.9830508474576272,
+          "kappa_answered": 0.9661016949152543
+        },
+        "margin_status": {
+          "n_curated": 247,
+          "n_answered": 193,
+          "n_rejected": 10,
+          "n_not_stated": 44,
+          "coverage": 0.7813765182186235,
+          "agreement_e2e": 0.6720647773279352,
+          "agreement_answered": 0.8601036269430051,
+          "kappa_answered": 0.2865553121577211
+        },
+        "ln_examined": {
+          "n_curated": 224,
+          "n_answered": 184,
+          "n_rejected": 15,
+          "n_not_stated": 25,
+          "coverage": 0.8214285714285714,
+          "agreement_e2e": 0.6964285714285714,
+          "agreement_answered": 0.8478260869565217,
+          "within1_answered": 0.8913043478260869
+        },
+        "ln_positive": {
+          "n_curated": 219,
+          "n_answered": 184,
+          "n_rejected": 13,
+          "n_not_stated": 22,
+          "coverage": 0.8401826484018264,
+          "agreement_e2e": 0.7579908675799086,
+          "agreement_answered": 0.9021739130434783,
+          "within1_answered": 0.967391304347826
+        }
+      },
+      "macro_e2e_categorical": 0.5965578467325191,
+      "macro_e2e_all": 0.6183331588611393,
+      "count_fields": [
+        "ln_examined",
+        "ln_positive"
+      ]
+    },
+    "gpt-4o": {
+      "per_field": {
+        "er_status": {
+          "n_curated": 247,
+          "n_answered": 139,
+          "n_rejected": 5,
+          "n_not_stated": 103,
+          "coverage": 0.562753036437247,
+          "agreement_e2e": 0.5587044534412956,
+          "agreement_answered": 0.9928057553956835,
+          "kappa_answered": 0.9807238940507559
+        },
+        "pr_status": {
+          "n_curated": 247,
+          "n_answered": 122,
+          "n_rejected": 22,
+          "n_not_stated": 103,
+          "coverage": 0.4939271255060729,
+          "agreement_e2e": 0.46558704453441296,
+          "agreement_answered": 0.9426229508196722,
+          "kappa_answered": 0.875036581796898
+        },
+        "her2_ihc_status": {
+          "n_curated": 219,
+          "n_answered": 109,
+          "n_rejected": 11,
+          "n_not_stated": 99,
+          "coverage": 0.4977168949771689,
+          "agreement_e2e": 0.4292237442922374,
+          "agreement_answered": 0.8623853211009175,
+          "kappa_answered": 0.7314388961892248
+        },
+        "her2_ihc_score": {
+          "n_curated": 157,
+          "n_answered": 68,
+          "n_rejected": 3,
+          "n_not_stated": 86,
+          "coverage": 0.43312101910828027,
+          "agreement_e2e": 0.36942675159235666,
+          "agreement_answered": 0.8529411764705882,
+          "kappa_answered": 0.7853535353535351
+        },
+        "her2_ish_status": {
+          "n_curated": 112,
+          "n_answered": 33,
+          "n_rejected": 2,
+          "n_not_stated": 77,
+          "coverage": 0.29464285714285715,
+          "agreement_e2e": 0.2767857142857143,
+          "agreement_answered": 0.9393939393939394,
+          "kappa_answered": 0.8053097345132745
+        },
+        "histologic_type": {
+          "n_curated": 258,
+          "n_answered": 252,
+          "n_rejected": 6,
+          "n_not_stated": 0,
+          "coverage": 0.9767441860465116,
+          "agreement_e2e": 0.9457364341085271,
+          "agreement_answered": 0.9682539682539683,
+          "kappa_answered": 0.9303506650544136
+        },
+        "pathologic_t": {
+          "n_curated": 258,
+          "n_answered": 184,
+          "n_rejected": 10,
+          "n_not_stated": 64,
+          "coverage": 0.7131782945736435,
+          "agreement_e2e": 0.6744186046511628,
+          "agreement_answered": 0.9456521739130435,
+          "kappa_answered": 0.9021172465155868
+        },
+        "pathologic_n": {
+          "n_curated": 258,
+          "n_answered": 189,
+          "n_rejected": 20,
+          "n_not_stated": 49,
+          "coverage": 0.7325581395348837,
+          "agreement_e2e": 0.7054263565891473,
+          "agreement_answered": 0.9629629629629629,
+          "kappa_answered": 0.9399291681801668
+        },
+        "laterality": {
+          "n_curated": 258,
+          "n_answered": 230,
+          "n_rejected": 8,
+          "n_not_stated": 20,
+          "coverage": 0.8914728682170543,
+          "agreement_e2e": 0.8837209302325582,
+          "agreement_answered": 0.991304347826087,
+          "kappa_answered": 0.9826100105852109
+        },
+        "margin_status": {
+          "n_curated": 247,
+          "n_answered": 188,
+          "n_rejected": 28,
+          "n_not_stated": 31,
+          "coverage": 0.7611336032388664,
+          "agreement_e2e": 0.6194331983805668,
+          "agreement_answered": 0.8138297872340425,
+          "kappa_answered": 0.25354509359047084
+        },
+        "ln_examined": {
+          "n_curated": 224,
+          "n_answered": 177,
+          "n_rejected": 27,
+          "n_not_stated": 20,
+          "coverage": 0.7901785714285714,
+          "agreement_e2e": 0.6607142857142857,
+          "agreement_answered": 0.8361581920903954,
+          "within1_answered": 0.8926553672316384
+        },
+        "ln_positive": {
+          "n_curated": 219,
+          "n_answered": 176,
+          "n_rejected": 25,
+          "n_not_stated": 18,
+          "coverage": 0.8036529680365296,
+          "agreement_e2e": 0.730593607305936,
+          "agreement_answered": 0.9090909090909091,
+          "within1_answered": 0.9715909090909091
+        }
+      },
+      "macro_e2e_categorical": 0.5928463232107979,
+      "macro_e2e_all": 0.6099809270940167,
+      "count_fields": [
+        "ln_examined",
+        "ln_positive"
+      ]
+    }
+  },
+  "primary": {
+    "estimand": "macro agreement_e2e over the 10 categorical fields, gpt-4.1 minus rules, test set",
+    "diff": 0.15304791455978822,
+    "ci_low": 0.13351142269947683,
+    "ci_high": 0.1729172794113927,
+    "n_boot": 2000,
+    "seed": 20261120,
+    "a": 0.5965578467325191,
+    "b": 0.4435099321727309,
+    "p_boot_le_0": 0.0,
+    "decision": "gpt-4.1 higher agreement"
+  },
+  "secondary": {
+    "gpt-4o_minus_rules_cat": {
+      "diff": 0.149336391038067,
+      "ci_low": 0.12824957881682392,
+      "ci_high": 0.17164940319327124,
+      "n_boot": 2000,
+      "seed": 20261120,
+      "a": 0.5928463232107979,
+      "b": 0.4435099321727309,
+      "p_boot_le_0": 0.0
+    },
+    "gpt-4.1_minus_gpt-4o_cat": {
+      "diff": 0.003711523521721216,
+      "ci_low": -0.006932459549888703,
+      "ci_high": 0.014322431942902822,
+      "n_boot": 2000,
+      "seed": 20261120,
+      "a": 0.5965578467325191,
+      "b": 0.5928463232107979,
+      "p_boot_le_0": 0.258
+    },
+    "gpt-4.1_minus_rules_all12": {
+      "diff": 0.19479469885853196,
+      "ci_low": 0.1762692087808018,
+      "ci_high": 0.21419029941495116,
+      "n_boot": 2000,
+      "seed": 20261120,
+      "a": 0.6183331588611393,
+      "b": 0.4235384600026073,
+      "p_boot_le_0": 0.0
+    },
+    "gpt-4o_minus_rules_all12": {
+      "diff": 0.18644246709140944,
+      "ci_low": 0.16693079428739205,
+      "ci_high": 0.2074227917630814,
+      "n_boot": 2000,
+      "seed": 20261120,
+      "a": 0.6099809270940167,
+      "b": 0.4235384600026073,
+      "p_boot_le_0": 0.0
+    },
+    "per_field_gpt-4.1_minus_rules": {
+      "er_status": {
+        "diff": 0.20647773279352222,
+        "ci_low": 0.15789473684210525,
+        "ci_high": 0.2591093117408907
+      },
+      "pr_status": {
+        "diff": 0.1497975708502024,
+        "ci_low": 0.10121457489878538,
+        "ci_high": 0.20242914979757082
+      },
+      "her2_ihc_status": {
+        "diff": 0.1461187214611872,
+        "ci_low": 0.0776255707762557,
+        "ci_high": 0.2146118721461187
+      },
+      "her2_ihc_score": {
+        "diff": 0.24203821656050953,
+        "ci_low": 0.17197452229299362,
+        "ci_high": 0.3121019108280255
+      },
+      "her2_ish_status": {
+        "diff": 0.1875,
+        "ci_low": 0.11607142857142858,
+        "ci_high": 0.25892857142857145
+      },
+      "histologic_type": {
+        "diff": 0.14341085271317833,
+        "ci_low": 0.0968992248062015,
+        "ci_high": 0.1937984496124031
+      },
+      "pathologic_t": {
+        "diff": 0.09302325581395343,
+        "ci_low": 0.05813953488372092,
+        "ci_high": 0.13178294573643412
+      },
+      "pathologic_n": {
+        "diff": 0.12403100775193798,
+        "ci_low": 0.0736434108527132,
+        "ci_high": 0.1705426356589148
+      },
+      "laterality": {
+        "diff": 0.10852713178294582,
+        "ci_low": 0.06976744186046513,
+        "ci_high": 0.15503875968992242
+      },
+      "margin_status": {
+        "diff": 0.12955465587044535,
+        "ci_low": 0.07692307692307687,
+        "ci_high": 0.18623481781376516
+      },
+      "ln_examined": {
+        "diff": 0.4508928571428571,
+        "ci_low": 0.38839285714285715,
+        "ci_high": 0.5178571428571428
+      },
+      "ln_positive": {
+        "diff": 0.3561643835616438,
+        "ci_low": 0.28310502283105027,
+        "ci_high": 0.4246575342465753
+      }
+    },
+    "per_field_gpt-4o_minus_rules": {
+      "er_status": {
+        "diff": 0.19433198380566807,
+        "ci_low": 0.1417004048582996,
+        "ci_high": 0.2469635627530365
+      },
+      "pr_status": {
+        "diff": 0.10121457489878544,
+        "ci_low": 0.04858299595141702,
+        "ci_high": 0.15789473684210525
+      },
+      "her2_ihc_status": {
+        "diff": 0.2146118721461187,
+        "ci_low": 0.1552511415525114,
+        "ci_high": 0.273972602739726
+      },
+      "her2_ihc_score": {
+        "diff": 0.24203821656050953,
+        "ci_low": 0.17197452229299362,
+        "ci_high": 0.31226114649681447
+      },
+      "her2_ish_status": {
+        "diff": 0.1875,
+        "ci_low": 0.11607142857142858,
+        "ci_high": 0.25892857142857145
+      },
+      "histologic_type": {
+        "diff": 0.1356589147286822,
+        "ci_low": 0.0852713178294574,
+        "ci_high": 0.18604651162790697
+      },
+      "pathologic_t": {
+        "diff": 0.09302325581395343,
+        "ci_low": 0.054263565891472854,
+        "ci_high": 0.13178294573643412
+      },
+      "pathologic_n": {
+        "diff": 0.15503875968992253,
+        "ci_low": 0.0968992248062015,
+        "ci_high": 0.2093023255813954
+      },
+      "laterality": {
+        "diff": 0.09302325581395354,
+        "ci_low": 0.04651162790697683,
+        "ci_high": 0.14341085271317822
+      },
+      "margin_status": {
+        "diff": 0.07692307692307687,
+        "ci_low": 0.020141700404858277,
+        "ci_high": 0.13765182186234814
+      },
+      "ln_examined": {
+        "diff": 0.4151785714285714,
+        "ci_low": 0.3482142857142857,
+        "ci_high": 0.47767857142857145
+      },
+      "ln_positive": {
+        "diff": 0.3287671232876712,
+        "ci_low": 0.2557077625570776,
+        "ci_high": 0.3972602739726027
+      }
+    }
+  },
+  "consistency": {
+    "rules": {
+      "positive_le_examined": {
+        "n_both": 118,
+        "violations": 3,
+        "rate": 0.025423728813559324
+      },
+      "pn_vs_positive_count": {
+        "n_both": 76,
+        "violations": 7,
+        "rate": 0.09210526315789473
+      },
+      "her2_score_vs_status": {
+        "n_both": 22,
+        "violations": 6,
+        "rate": 0.2727272727272727
+      }
+    },
+    "gpt-4.1": {
+      "positive_le_examined": {
+        "n_both": 190,
+        "violations": 0,
+        "rate": 0.0
+      },
+      "pn_vs_positive_count": {
+        "n_both": 138,
+        "violations": 5,
+        "rate": 0.036231884057971016
+      },
+      "her2_score_vs_status": {
+        "n_both": 74,
+        "violations": 1,
+        "rate": 0.013513513513513514
+      }
+    },
+    "gpt-4o": {
+      "positive_le_examined": {
+        "n_both": 183,
+        "violations": 0,
+        "rate": 0.0
+      },
+      "pn_vs_positive_count": {
+        "n_both": 138,
+        "violations": 3,
+        "rate": 0.021739130434782608
+      },
+      "her2_score_vs_status": {
+        "n_both": 95,
+        "violations": 2,
+        "rate": 0.021052631578947368
+      }
+    },
+    "curated": {
+      "positive_le_examined": {
+        "n_both": 219,
+        "violations": 0,
+        "rate": 0.0
+      },
+      "pn_vs_positive_count": {
+        "n_both": 217,
+        "violations": 15,
+        "rate": 0.06912442396313365
+      },
+      "her2_score_vs_status": {
+        "n_both": 154,
+        "violations": 12,
+        "rate": 0.07792207792207792
+      }
+    }
+  },
+  "cost": {
+    "gpt-4.1": {
+      "n_reports": 258,
+      "input_tokens": {
+        "mean": 2453.7131782945735,
+        "median": 2300.5,
+        "p95": 4227.15,
+        "total": 633058.0
+      },
+      "cached_input_tokens": {
+        "mean": 156.7751937984496,
+        "median": 0.0,
+        "p95": 1152.0,
+        "total": 40448.0
+      },
+      "output_tokens": {
+        "mean": 326.9263565891473,
+        "median": 302.5,
+        "p95": 501.15,
+        "total": 84347.0
+      },
+      "seconds": {
+        "mean": 1.7997868217054265,
+        "median": 1.687,
+        "p95": 2.7798499999999997,
+        "total": 464.345
+      },
+      "cost_usd": {
+        "mean": 0.007287674418604651,
+        "median": 0.006975,
+        "p95": 0.011828599999999996,
+        "total": 1.88022
+      },
+      "finish_not_stop": 0,
+      "deployment_models": [
+        "gpt-4.1-2025-04-14"
+      ],
+      "providers": [
+        "openai"
+      ]
+    },
+    "gpt-4o": {
+      "n_reports": 258,
+      "input_tokens": {
+        "mean": 2453.7131782945735,
+        "median": 2300.5,
+        "p95": 4227.15,
+        "total": 633058.0
+      },
+      "cached_input_tokens": {
+        "mean": 183.06976744186048,
+        "median": 0.0,
+        "p95": 1152.0,
+        "total": 47232.0
+      },
+      "output_tokens": {
+        "mean": 332.61240310077517,
+        "median": 320.5,
+        "p95": 497.15,
+        "total": 85814.0
+      },
+      "seconds": {
+        "mean": 1.5280038759689922,
+        "median": 1.5,
+        "p95": 2.1484499999999995,
+        "total": 394.225
+      },
+      "cost_usd": {
+        "mean": 0.009231581395348838,
+        "median": 0.0089185,
+        "p95": 0.014541249999999997,
+        "total": 2.381748
+      },
+      "finish_not_stop": 0,
+      "deployment_models": [
+        "gpt-4o-2024-11-20"
+      ],
+      "providers": [
+        "openai"
+      ]
+    }
+  },
+  "grounding": {
+    "rules": {
+      "cells": 3096,
+      "claimed_values": 1445,
+      "rejected": 0,
+      "rejection_rate_of_claims": 0.0,
+      "not_stated": 1651,
+      "reasons": {}
+    },
+    "gpt-4.1": {
+      "cells": 3096,
+      "claimed_values": 2075,
+      "rejected": 106,
+      "rejection_rate_of_claims": 0.05108433734939759,
+      "not_stated": 1021,
+      "reasons": {
+        "quote_not_in_report": 40,
+        "quote_lacks_field_cue": 56,
+        "number_not_in_quote": 10
+      }
+    },
+    "gpt-4o": {
+      "cells": 3096,
+      "claimed_values": 2128,
+      "rejected": 178,
+      "rejection_rate_of_claims": 0.08364661654135339,
+      "not_stated": 968,
+      "reasons": {
+        "quote_not_in_report": 105,
+        "quote_lacks_field_cue": 53,
+        "number_not_in_quote": 20
+      }
+    }
+  },
+  "error_tags": {
+    "rules": {
+      "abstained": {
+        "untagged": 425,
+        "not_extracted_by_any": 338,
+        "missing_in_report": 390,
+        "multiple_specimens_or_sides": 235,
+        "ocr_noise_in_evidence": 20
+      },
+      "wrong_value": {
+        "extractors_conflict": 102,
+        "multiple_specimens_or_sides": 63,
+        "curated_vs_report_conflict": 56,
+        "untagged": 8
+      }
+    },
+    "gpt-4.1": {
+      "abstained": {
+        "not_extracted_by_any": 338,
+        "missing_in_report": 390,
+        "multiple_specimens_or_sides": 135,
+        "untagged": 49,
+        "ocr_noise_in_evidence": 15
+      },
+      "wrong_value": {
+        "multiple_specimens_or_sides": 43,
+        "curated_vs_report_conflict": 56,
+        "extractors_conflict": 30,
+        "untagged": 39,
+        "ocr_noise_in_evidence": 2
+      }
+    },
+    "gpt-4o": {
+      "abstained": {
+        "untagged": 64,
+        "not_extracted_by_any": 338,
+        "missing_in_report": 390,
+        "multiple_specimens_or_sides": 141,
+        "extractors_conflict": 8,
+        "ocr_noise_in_evidence": 11,
+        "curated_vs_report_conflict": 1
+      },
+      "wrong_value": {
+        "multiple_specimens_or_sides": 43,
+        "curated_vs_report_conflict": 54,
+        "untagged": 44,
+        "extractors_conflict": 26,
+        "ocr_noise_in_evidence": 2
+      }
+    }
+  },
+  "adjudication_sample": {
+    "n": 30,
+    "files": [
+      "results/adjudication_sample.md",
+      "results/adjudication_sample.csv"
+    ],
+    "by_field": {
+      "er_status": 3,
+      "pr_status": 3,
+      "her2_ihc_status": 3,
+      "her2_ihc_score": 3,
+      "her2_ish_status": 3,
+      "histologic_type": 3,
+      "pathologic_t": 2,
+      "pathologic_n": 2,
+      "laterality": 2,
+      "margin_status": 2,
+      "ln_examined": 2,
+      "ln_positive": 2
+    },
+    "status": "UNREVIEWED"
+  }
+}

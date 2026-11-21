@@ -9,82 +9,78 @@ Both extractors are scored against **curated TCGA clinical fields** under a prot
 
 > **Agreement, not accuracy.** The curated values come from TCGA clinical data forms, and those may draw on documents other than this OCR'd report (addenda, separate IHC/FISH reports, later surgery). A disagreement is therefore not necessarily an extractor error. A 30-item adjudication sample is provided for hand review. **It has not been reviewed yet**, so nothing here is "validated".
 
-## Results: SUPERSEDED (provisional Azure OpenAI endpoint), replication pending
+## Results (held-out test, 258 patients; OpenAI API replication, run once)
 
-> **Status.** The numbers below come from the v1.0 one-shot test run, which used the same pinned snapshots through a provisional Azure OpenAI endpoint. That endpoint is no longer used, so the run is **superseded** (`docs/protocol.md`, Addendum 2) and kept only for comparison.
->
-> A replication on the OpenAI API, with the same prompt, schema, rules and analysis, is prepared and frozen. Its first attempt was **blocked**: the OpenAI account had no credit, every call returned HTTP 429 `insufficient_quota`, no output was produced and nothing was billed.
->
-> Until the replication runs, treat these numbers as provisional. Do not cite them as the project's results.
+Provider: OpenAI API, pinned snapshots `gpt-4.1-2025-04-14` / `gpt-4o-2024-11-20`, frozen commit `e26bfcb` (`results/freeze.json`, protocol Addendum 2). These replace the superseded v1.0 run (same snapshots, prompt, schema, rules and analysis via a provisional Azure OpenAI endpoint), which is kept for comparison in `results/superseded_azure/`.
 
-Headline macro figures cover the **10 categorical fields**, not all 12.
+Full tables: [`results/results_tables.md`](results/results_tables.md); raw numbers: `results/test_results.json`; comparison with the superseded run: `results/replication_vs_superseded.json`.
 
-Full tables: [`results/superseded_azure/results_tables.md`](results/superseded_azure/results_tables.md); raw numbers: `results/superseded_azure/test_results.json`.
+Per-field **end-to-end agreement** with curated values (abstentions count as non-agreement) / **coverage** / **Cohen's κ** (over answered):
 
-Per-field **end-to-end agreement** with curated values (abstentions count as non-agreement), **coverage** (answered / curated-available) and **Cohen's κ** (over answered):
-
-| field | n | rules e2e / cov / κ | gpt-4.1 e2e / cov / κ | gpt-4o e2e / cov / κ |
+| field | n | rules | gpt-4.1 | gpt-4o |
 |---|---|---|---|---|
-| er_status | 247 | 0.364 / 0.409 / 0.734 | 0.567 / 0.571 / 0.982 | 0.567 / 0.571 / 0.981 |
-| pr_status | 247 | 0.364 / 0.417 / 0.722 | 0.514 / 0.538 / 0.902 | 0.494 / 0.522 / 0.881 |
-| her2_ihc_status | 219 | 0.215 / 0.251 / 0.670 | 0.374 / 0.438 / 0.719 | 0.438 / 0.502 / 0.748 |
-| her2_ihc_score | 157 | 0.127 / 0.178 / 0.590 | 0.369 / 0.427 / 0.809 | 0.376 / 0.439 / 0.790 |
-| her2_ish_status | 112 | 0.089 / 0.116 / 0.304 | 0.268 / 0.286 / 0.826 | 0.277 / 0.295 / 0.805 |
-| histologic_type | 258 | 0.810 / 0.837 / 0.927 | 0.950 / 0.988 / 0.917 | 0.950 / 0.984 / 0.925 |
-| pathologic_t | 258 | 0.581 / 0.616 / 0.897 | 0.671 / 0.713 / 0.893 | 0.674 / 0.713 / 0.902 |
-| pathologic_n | 258 | 0.550 / 0.566 / 0.958 | 0.702 / 0.736 / 0.924 | 0.721 / 0.756 / 0.925 |
-| laterality | 258 | 0.791 / 0.814 / 0.943 | 0.899 / 0.919 / 0.958 | 0.888 / 0.899 / 0.974 |
-| margin_status | 247 | 0.543 / 0.611 / 0.300 | 0.680 / 0.789 / 0.288 | 0.611 / 0.785 / 0.206 |
-| ln_examined | 224 | 0.246 / 0.513 / n/a | 0.661 / 0.812 / n/a | 0.652 / 0.808 / n/a |
-| ln_positive | 219 | 0.402 / 0.511 / n/a | 0.726 / 0.826 / n/a | 0.726 / 0.817 / n/a |
-| **macro (10 categorical)** | | **0.444** | **0.599** | **0.600** |
-| macro (all 12) | | 0.424 | 0.615 | 0.614 |
+| er_status | 247 | 0.364 / 0.409 / 0.734 | 0.571 / 0.575 / 0.982 | 0.559 / 0.563 / 0.981 |
+| pr_status | 247 | 0.364 / 0.417 / 0.722 | 0.514 / 0.543 / 0.887 | 0.466 / 0.494 / 0.875 |
+| her2_ihc_status | 219 | 0.215 / 0.251 / 0.670 | 0.361 / 0.425 / 0.721 | 0.429 / 0.498 / 0.731 |
+| her2_ihc_score | 157 | 0.127 / 0.178 / 0.590 | 0.369 / 0.427 / 0.809 | 0.369 / 0.433 / 0.785 |
+| her2_ish_status | 112 | 0.089 / 0.116 / 0.304 | 0.277 / 0.295 / 0.827 | 0.277 / 0.295 / 0.805 |
+| histologic_type | 258 | 0.810 / 0.837 / 0.927 | 0.953 / 0.992 / 0.918 | 0.946 / 0.977 / 0.930 |
+| pathologic_t | 258 | 0.581 / 0.616 / 0.897 | 0.674 / 0.713 / 0.902 | 0.674 / 0.713 / 0.902 |
+| pathologic_n | 258 | 0.550 / 0.566 / 0.958 | 0.674 / 0.709 / 0.922 | 0.705 / 0.733 / 0.940 |
+| laterality | 258 | 0.791 / 0.814 / 0.943 | 0.899 / 0.915 / 0.966 | 0.884 / 0.891 / 0.983 |
+| margin_status | 247 | 0.543 / 0.611 / 0.300 | 0.672 / 0.781 / 0.287 | 0.619 / 0.761 / 0.254 |
+| ln_examined | 224 | 0.246 / 0.513 / n/a | 0.696 / 0.821 / n/a | 0.661 / 0.790 / n/a |
+| ln_positive | 219 | 0.402 / 0.511 / n/a | 0.758 / 0.840 / n/a | 0.731 / 0.804 / n/a |
+| **macro, 10 categorical fields** | | **0.444** | **0.597** | **0.593** |
+| macro, all 12 fields | | 0.424 | 0.618 | 0.610 |
 
-**Primary comparison (prespecified):** macro end-to-end agreement over the 10 categorical fields, gpt-4.1 − rules = **+0.156 (95% CI +0.136 to +0.176)**, paired patient bootstrap B = 2000 → *gpt-4.1 higher agreement*.
-Secondary: gpt-4o − rules +0.156 (95% CI +0.135 to +0.178); gpt-4.1 − gpt-4o -0.000 (95% CI -0.011 to +0.009) (no detectable difference between the two LLMs).
+**Primary comparison (prespecified):** macro end-to-end agreement over the **10 categorical fields**, gpt-4.1 − rules = **+0.153 (95% CI +0.134 to +0.173)**, paired patient bootstrap B = 2000 → *gpt-4.1 higher agreement*.
+Secondary: gpt-4o − rules +0.149 (95% CI +0.128 to +0.172); gpt-4.1 − gpt-4o +0.004 (95% CI -0.007 to +0.014); gpt-4.1 − rules over all 12 fields +0.195 (95% CI +0.176 to +0.214).
+
+**Replication vs superseded run.** Primary estimate +0.153 [+0.134, +0.173] vs superseded +0.156 [+0.136, +0.176]; same decision: True. Rules outputs identical: True. Grounded field outputs (status + value) identical between runs in 96.6% of gpt-4.1 cells and 95.7% of gpt-4o cells (temperature 0 is not bit-deterministic across providers/infrastructure).
 
 **Abstention and grounding.** Of 3,096 field cells (258 × 12):
 
 - rules: 1445 values claimed, 0 rejected by grounding (0.0% of claims: none), 1651 not_stated.
-- gpt-4.1: 2081 values claimed, 103 rejected by grounding (4.9% of claims: quote_lacks_field_cue 50, quote_not_in_report 42, number_not_in_quote 11), 1015 not_stated.
-- gpt-4o: 2138 values claimed, 149 rejected by grounding (7.0% of claims: quote_not_in_report 66, number_not_in_quote 26, quote_lacks_field_cue 57), 958 not_stated.
-- Post hoc (not prespecified, `results/superseded_azure/posthoc_rejections.json`): 89 of gpt-4.1's 103 rejected claims (gpt-4o: 127 of 149) had a claimed value equal to the curated value — the strict all-quotes-verbatim rule costs agreement; it was kept as prespecified.
+- gpt-4.1: 2075 values claimed, 106 rejected by grounding (5.1% of claims: quote_not_in_report 40, quote_lacks_field_cue 56, number_not_in_quote 10), 1021 not_stated.
+- gpt-4o: 2128 values claimed, 178 rejected by grounding (8.4% of claims: quote_not_in_report 105, quote_lacks_field_cue 53, number_not_in_quote 20), 968 not_stated.
+- Post hoc (`results/posthoc_rejections.json`): 92 of gpt-4.1's 106 rejected claims (gpt-4o: 140 of 178) had a claimed value equal to the curated value. The strict all-quotes-verbatim rule costs agreement; it is kept as prespecified. Grounding checks that a quote **exists** and mentions the field, not that it supports the value.
 
-**Cost / latency (test, per report).**
+**Cost / latency (test, per report; API usage × list price, billing not checked).**
 
-- gpt-4.1: mean 2454 input + 331 output tokens, USD 0.0076/report (USD 1.95 for 258), latency mean 4.32 s / median 3.10 s / p95 10.79 s (2 workers, includes HTTP-429 back-off).
-- gpt-4o: mean 2454 input + 334 output tokens, USD 0.0095/report (USD 2.44 for 258), latency mean 2.38 s / median 2.24 s / p95 3.39 s (2 workers, includes HTTP-429 back-off).
-- Total LLM spend for the whole project (dev iteration + test, list prices × logged tokens): **USD 5.67** (`results/llm_spend.json` → `superseded_azure`). Rules: 0.92 s for all 1,034 reports on CPU, single process (`results/rules_timing.json`).
+- gpt-4.1: mean 2454 input (of which 157 cached) + 327 output tokens, USD 0.0073/report (USD 1.88 for 258); latency mean 1.80 s / median 1.69 s / p95 2.78 s (2 workers).
+- gpt-4o: mean 2454 input (of which 183 cached) + 333 output tokens, USD 0.0092/report (USD 2.38 for 258); latency mean 1.53 s / median 1.50 s / p95 2.15 s (2 workers).
+- Spend on the OpenAI API for this replication: **USD 4.26** (cap 6). Superseded run (dev iteration + test + smoke): USD 5.67. Rules: 0.92 s for all 1,034 reports on CPU (`results/rules_timing.json`).
 
-**Cross-field consistency checks** (violations / patients with both fields answered; these are checks, not relation extraction):
+**Cross-field consistency checks** (violations / patients with both fields answered; checks, not relation extraction):
 
 | check | rules | gpt-4.1 | gpt-4o | curated |
 |---|---|---|---|---|
-| positive_le_examined | 3/118 | 0/189 | 0/189 | 0/219 |
-| pn_vs_positive_count | 7/76 | 5/143 | 9/148 | 15/217 |
-| her2_score_vs_status | 6/22 | 0/81 | 3/97 | 12/154 |
+| positive_le_examined | 3/118 | 0/190 | 0/183 | 0/219 |
+| pn_vs_positive_count | 7/76 | 5/138 | 3/138 | 15/217 |
+| her2_score_vs_status | 6/22 | 1/74 | 2/95 | 12/154 |
 
-The curated values themselves violate the score→status and count→pN checks in some patients (possible reasons include status recorded after a reflex test, micrometastases/ITC and IHC-only nodes; not investigated), which is one more reason to read disagreement as *disagreement*.
+The curated values themselves are inconsistent with the score→status and count→pN rules in some patients (possible reasons: status recorded after a reflex test, micrometastases/ITC, IHC-only nodes; not investigated).
 
 ### How to read this
 
-- For histology, pT, pN, laterality, margin and HER2 IHC status, agreement *among answered cases* is similar for rules and gpt-4.1 (within about 0.03, e.g. pT 0.943 vs 0.940); there the LLM's advantage is mainly **coverage** (it answers more often while staying grounded). For ER/PR, HER2 score, HER2 ISH and node counts the LLM is also more often in agreement when it answers (e.g. `ln_examined` 0.478 rules vs 0.813 gpt-4.1, where the rules' sum heuristic double-counts).
-- Receptor fields have low end-to-end agreement for *every* extractor (ER at most 0.567) because the status is often not in this OCR'd report at all (separate IHC report / addendum). 390 curated-available (patient, field) cells have no field cue anywhere in the report text (automatic tag `missing_in_report`, `test_results.json → error_tags`).
-- `margin_status` κ is low (≈ 0.2–0.3) for all extractors: the curated field is mostly `negative`, and `close` vs `negative` is definitional.
-- **Adjudication sample** (30 test disagreements, stratified by field): [`results/superseded_azure/adjudication_sample.md`](results/superseded_azure/adjudication_sample.md) / `.csv` — **unreviewed**. An agent pre-read (explicitly *not* an adjudication) is in [`results/superseded_azure/adjudication_agent_preread.md`](results/superseded_azure/adjudication_agent_preread.md): it tentatively attributes ~11 of 30 to the curated value disagreeing with what this report states, 8–9 to rules errors, 3–4 to gpt-4.1 (two prompt-induced HER2 'POSITIVE (2+)' → equivocal errors, one grounding rejection of a correct value), and ~7 to ambiguity/definitions. Until Lu reviews it, none of this is validated.
+- On several fields (histology, pT, pN, laterality, margin, HER2 IHC status) agreement *among answered cases* is similar for rules and the LLMs; there the LLM advantage is mainly **coverage**. See `results/results_tables.md` for the answered-agreement columns.
+- Receptor fields have low end-to-end agreement for every extractor because the status is often not in this OCR'd report at all (separate IHC report / addendum); see the `missing_in_report` tag counts in `test_results.json → error_tags`.
+- `margin_status` κ is low for all extractors: the curated field is mostly `negative`, and `close` vs `negative` is definitional.
+- **Adjudication sample** (30 test disagreements, identical selection rule): [`results/adjudication_sample.md`](results/adjudication_sample.md) / `.csv` — **unreviewed**. Relative to the superseded sample, 18 items are kept, 12 added, 12 dropped (`replication_vs_superseded.json → adjudication_sample`). The agent pre-read of the superseded sample (`results/superseded_azure/adjudication_agent_preread.md`) is not an adjudication.
 
 ### What was verified on the test run
 
-- Test extraction ran against the frozen commit `1fb21c1` (`results/superseded_azure/freeze.json`); the runner refuses to run if `src/` or `protocol.json` changed since.
-- The first test attempt stopped after gpt-4.1 because 7 calls still hit HTTP 429 after retries (`results/superseded_azure/test_run_attempt1.log`); per the prespecified failed-call rule the run was re-executed, which only filled the 7 missing calls (all others came from cache). All 516 test calls finished with `finish_reason = stop`.
-- Deployment model versions were logged per response: `gpt-4.1-2025-04-14`, `gpt-4o-2024-11-20`.
+- Extraction ran against frozen commit `e26bfcb`; the runner refuses to run if `src/` or `protocol.json` changed since. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze `1fb21c1`.
+- Finish reason `stop` for all calls (non-stop: gpt-4.1 0, gpt-4o 0); served model versions logged per response: gpt-4.1-2025-04-14, gpt-4o-2024-11-20.
+- An earlier replication attempt was blocked by `insufficient_quota` with zero responses (`docs/protocol.md`, Addendum 2 run log).
 
 ## Limitations
 
 - **Agreement ≠ accuracy**, and the adjudication sample is not yet reviewed. No claim of validated extraction performance.
 - **Reference is imperfect and partly out-of-report:** curated TCGA fields can come from other documents; receptor/HER2 fields are often absent from the OCR'd report.
 - **Template sharing:** the split is by patient, not tissue source site (39 sites); rules tuned on dev have seen the same templates as test. This favours the rules baseline; an LLM-vs-rules gap on unseen sites could be larger.
-- **Single run** per model at temperature 0; run-to-run variance not measured. Dev LLM iteration used only 80 patients and two prompt versions.
+- **Run-to-run variability:** one temperature-0 run per model per provider. Across the superseded and replication runs (same snapshots), 96.6% (gpt-4.1) and 95.7% (gpt-4o) of grounded field outputs were identical, and the primary estimate moved by −0.003. Individual items can flip: the HER2 'POSITIVE (2+)' → equivocal prompt issue appears in 1 of the 2 superseded cases in the replication. Dev LLM iteration used only 80 patients and two prompt versions, on the superseded endpoint.
 - **Grounding checks are lexical**: they prove the quote exists and mentions the field, not that it entails the value (see the HER2 2+ errors).
 - **Error-source tags are heuristics**, not adjudications. Node counts summed across specimens are inherently hard to evidence with short quotes.
 - **Cost** is list price × logged API usage; actual billing was not checked. Latency includes SDK retry back-off.

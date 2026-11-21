@@ -154,4 +154,8 @@ The tags are not adjudicated.
 
 - **Attempt 1, 2026-11-20 ~22:19 UTC: aborted, zero responses.** The OpenAI API returned HTTP 429 `insufficient_quota` / `credit_balance_exhausted` ("You have no credits remaining") for every completion call. The SDK retried each call, so the run hung without producing output. It was stopped by hand, and one single diagnostic call confirmed the error. No completion was returned, no response was cached, and no token usage was billed. The model endpoints for both snapshots were reachable (`models.retrieve` succeeded).
 - **Provider-layer fix (no analysis change).** `src/prel/llm.py` now aborts the whole run on `insufficient_quota` instead of retrying every call, and flushes its error log. Prompt, schema, rules, grounding and metrics are byte-identical to the v1.0 freeze (verified). A new freeze will be recorded before the next attempt.
-- **Status: replication BLOCKED** until credit is added to the OpenAI account. Until then, the only test results are the superseded v1.0 results in `results/superseded_azure/`. They must not be used as headline results.
+- Status after attempt 1: blocked until credit was added.
+- **Attempt 2, 2026-11-20: completed.** Credit was added to the OpenAI account, and the runner ran once against freeze `e26bfcb` with no code change. All 516 test calls (2 × 258) returned `finish_reason = stop`, with no failed calls, at a spend of USD 4.26 (list price, under the USD 6 cap).
+  - The results in `results/` are now the headline results.
+  - The comparison with the superseded run is in `results/replication_vs_superseded.json`. It shows the same primary decision: +0.153 [0.134, 0.173] vs +0.156 [0.136, 0.176], with 96.6% / 95.7% of field outputs identical and identical rules outputs.
+  - The adjudication sample was regenerated with the identical rule. 18 of 30 items were kept; 12 changed, because the candidate pools changed and the within-field shuffle depends on pool membership.
